@@ -9,7 +9,7 @@ class Gameplay:
     def __init__(self,size):
         self.size = size
         self.grid = {}
-        self.greenlist = []
+        self.poplist = []
         self.greylist= []
 
     def setup(self):
@@ -27,10 +27,10 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = "{:.1f}".format(random.uniform(-1, 1))
+                uncertainty = float("{:.1f}".format(random.uniform(-0.7, 0.7)))
                 g = greenNode(voting, uncertainty, count)
-                self.greenlist.append(g)
-                self.grid[g] = 0
+                self.poplist.append(g)
+                self.grid[g.id] = 0
                 count += 1
 
 
@@ -42,10 +42,10 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = "{:.1f}".format(random.uniform(-1, 0.7))
+                uncertainty = float("{:.1f}".format(random.uniform(-0.8, 0.6)))
                 g = greenNode(voting, uncertainty, count)
-                self.grid[g] = 0
-                self.greenlist.append(g)
+                self.grid[g.id] = 0
+                self.poplist.append(g)
                 count += 1
             elif (i < 7):
                 probcurve.append(3)
@@ -55,10 +55,10 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = "{:.1f}".format(random.uniform(-1, 0.4))
+                uncertainty = float("{:.1f}".format(random.uniform(-0.9, 0.4)))
                 g = greenNode(voting, uncertainty, count)
-                self.grid[g] = 0
-                self.greenlist.append(g)
+                self.grid[g.id] = 0
+                self.poplist.append(g)
                 count += 1
             elif (i < 9):
                 probcurve.append(4)
@@ -68,10 +68,10 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = "{:.1f}".format(random.uniform(-1, 0.2))
+                uncertainty = float("{:.1f}".format(random.uniform(-1, 0.2)))
                 g = greenNode(voting, uncertainty, count)
-                self.grid[g] = 0
-                self.greenlist.append(g)
+                self.grid[g.id] = 0
+                self.poplist.append(g)
                 count += 1
             elif (i < 30):
                 probcurve.append(5)
@@ -81,10 +81,10 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = "{:.1f}".format(random.uniform(-1, 0))
+                uncertainty = float("{:.1f}".format(random.uniform(-1, 0)))
                 g = greenNode(voting, uncertainty, count)
-                self.grid[g] = 0
-                self.greenlist.append(g)
+                self.grid[g.id] = 0
+                self.poplist.append(g)
                 count += 1
 
             else:
@@ -92,15 +92,46 @@ class Gameplay:
                 voting = True
                 uncertainty = -1.0
                 g = greenNode(voting, uncertainty, count)
-                self.greenlist.append(g)
-                self.grid[g] = 0
+                self.poplist.append(g)
+                self.grid[g.id] = 0
                 count += 1
 
-        for key, value in self.grid.items():
-            print(key.voting, key.uncertainty, key.id)
-
     def interactionPhase(self):
-        print('node interaction happening')
+        print('Everyone is talking...')
+        for key in self.grid.keys():
+            iagent = random.randrange(0, len(self.poplist))
+            # print(self.poplist[key].uncertainty,self.poplist[key].id)
+            self.grid[key] = self.poplist[iagent]
+            self.poplist[key].interact(self.grid[key])
+            # print(self.poplist[key].uncertainty, self.poplist[key].id)
+
+        # for key, value in self.grid.items():
+        #     key.interact(value)
+
+        print('Interaction is over...')
+
+    def currentBias(self):
+        votingcount = 0
+        notvotingcount = 0
+        uncertaintyavgVoting = 0
+        uncertaintyavgNotVoting = 0
+        for agent in self.poplist:
+            if(agent.voting):
+                votingcount += 1
+                uncertaintyavgVoting += agent.uncertainty
+            else:
+                notvotingcount += 1
+                uncertaintyavgNotVoting += agent.uncertainty
+
+        currvotingpercentage = (votingcount/len(self.poplist)) * 100
+        uncertaintyavgVoting /= votingcount
+        uncertaintyavgNotVoting /= notvotingcount
+        print('people voting =',"{:.1f}".format(currvotingpercentage))
+        print('the uncertainty average of people voting =', "{:.1f}".format(uncertaintyavgVoting))
+        print('the uncertainty average of people NOT voting =', "{:.1f}".format(uncertaintyavgNotVoting))
+
+
+
 
     def result(self):
         print('You are all winners')

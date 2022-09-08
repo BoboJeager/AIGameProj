@@ -1,5 +1,6 @@
 import random;
 import collections;
+import time;
 
 
 class greenNode:
@@ -21,4 +22,36 @@ class greenNode:
         self.uncertainty += value
 
     def interact(self, neighbour):
-        print('interacting')
+        if(self.id != neighbour.id):
+            print(self.id, ' is interacting with ', neighbour.id)
+            time.sleep(2.0)
+            influenceUncertainty = float("{:.1f}".format(random.uniform(0.1, 0.4)))
+            influenced = random.randrange(1,3)
+            if (influenced == 1):
+                if(neighbour.uncertainty > self.uncertainty):
+                    print(self.id, 'is convinced\n')
+                    if(neighbour.voting != self.voting):
+                        self.setUncertainty(influenceUncertainty)
+                        if(self.uncertainty > 1):
+                            self.uncertainty =  1
+                    else:
+                        self.setUncertainty(-influenceUncertainty)
+                        if(self.uncertainty < -1):
+                            self.uncertainty = -1
+                elif(neighbour.uncertainty < self.uncertainty):
+                    print(self.id, 'is convincing\n')
+                    if (neighbour.voting != self.voting):
+                        neighbour.setUncertainty(influenceUncertainty)
+                        if (neighbour.uncertainty > 1):
+                            neighbour.uncertainty = 1
+                    else:
+                        neighbour.setUncertainty(-influenceUncertainty)
+                        if (neighbour.uncertainty < -1):
+                            neighbour.uncertainty = -1
+            else:
+                 print('no one is convinced\n')
+        else:
+            print(self.id, 'is talking to themselves what a loser\n')
+            time.sleep(1.0)
+
+
