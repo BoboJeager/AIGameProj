@@ -1,6 +1,7 @@
 import random
 import numpy as np
 from greenNode import greenNode
+from blueNode import BlueNode
 from greyNode import GreyNode
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -11,6 +12,7 @@ class Gameplay:
         self.grid = {}
         self.poplist = []
         self.greylist= []
+        self.bluePlayer = BlueNode()
 
     def setup(self):
         dataDist = np.random.pareto(1, self.size) + 1  # Press Ctrl+F8 to toggle the breakpoint.
@@ -129,6 +131,24 @@ class Gameplay:
         print('people voting =',"{:.1f}".format(currvotingpercentage))
         print('the uncertainty average of people voting =', "{:.1f}".format(uncertaintyavgVoting))
         print('the uncertainty average of people NOT voting =', "{:.1f}".format(uncertaintyavgNotVoting))
+
+
+    def blueTeamTurn(self):
+        print("current energy = ", self.bluePlayer.energy)
+        print("press 1 to broadcast message")
+        print("press 2 to deploy a grey agent\n")
+        choice = input()
+        try:
+            choice = int(choice)
+            if(choice == 1):
+                for t in self.bluePlayer.messagesString:
+                    print(t[0])
+            option = input("\nwhich message to broadcast?\n")
+            option = int(option)
+            self.bluePlayer.broadcastMessage(self.poplist,option)
+            print(self.bluePlayer.energy)
+        except ValueError:
+            print('number must be an int')
 
 
 

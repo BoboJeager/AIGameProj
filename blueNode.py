@@ -1,21 +1,107 @@
 import random;
 import collections;
+from greyNode import GreyNode;
 
 
 class BlueNode:
 
     def __init__(self):
         self.energy = 100
-        self.messagesString = [("Vote Plox",1),("Democracy good",1),("just vote pls, do it",2),("I beg you",2),("red no good",3),("boo red fake news",3),("dont belif media pls",4),("i swear we're better",4),("free healthcare",5),("for the ppl by the ppl",5)]
+        self.messagesString = [("1. Vote Plox (broadcast power 1/Energy cost 5)",1),("2. Democracy good (broadcast power 1/Energy cost 5)",1),
+                               ("3. just vote pls, do it (broadcast power 2/Energy cost 10)",2),("4. I beg you (broadcast power 2)/Energy cost 10)",2),
+                               ("5. red no good (broadcast power 3)/Energy cost 15",3),("6. boo red fake news (broadcast power 3)/Energy cost 15)",3),
+                               ("7. dont belif media pls (broadcast power 4/Energy cost 20)",4),("8. i swear we're better (broadcast power 4/Energy cost 20)",4),
+                               ("9. free healthcare (broadcast power 5/Energy cost 30)",5),("10. for the ppl by the ppl (broadcast power 5/Energy cost 30)",5)]
         self.greyAgentsAvailable = 10
 
+    def setenergy(self, value):
+        self.energy -= value
 
-    def broadcastMessage(self,option):
-        print("boradcasting...")
+    def broadcastMessage(self,populationGrid,broadcastOption):
+        broadcastOption -= 1
+        option = self.messagesString[broadcastOption]
+        print(option[0])
+        if(option[1] == 1):
+            print("broadcasted")
+            self.setenergy(5)
+            for gn in populationGrid:
+                if(gn.voting):
+                    gn.setUncertainty(-0.1)
+                    if(gn.uncertainty < -1):
+                        gn.uncertainty = -1
+                else:
+                    gn.setUncertainty(0.1)
+                    if(gn.uncertainty > 1):
+                        gn.flipVote()
+                        x = 1 - gn.uncertainty
+                        gn.uncertainty = 1 - x
+
+        elif(option[1] == 2):
+            print("broadcasted")
+            self.setenergy(10)
+            print("broadcasted")
+            self.setenergy(5)
+            for gn in populationGrid:
+                if (gn.voting):
+                    gn.setUncertainty(-0.2)
+                    if (gn.uncertainty < -1):
+                        gn.uncertainty = -1
+                else:
+                    gn.setUncertainty(0.2)
+                    if (gn.uncertainty > 1):
+                        gn.flipVote()
+                        x = 1 - gn.uncertainty
+                        gn.uncertainty = 1 - x
+        elif (option[1] == 3):
+            print("broadcasted")
+            self.setenergy(15)
+            for gn in populationGrid:
+                if (gn.voting):
+                    gn.setUncertainty(-0.4)
+                    if (gn.uncertainty < -1):
+                        gn.uncertainty = -1
+                else:
+                    gn.setUncertainty(0.4)
+                    if (gn.uncertainty > 1):
+                        gn.flipVote()
+                        x = 1 - gn.uncertainty
+                        gn.uncertainty = 1 - x
+        elif (option[1] == 4):
+            print("broadcasted")
+            self.setenergy(20)
+            for gn in populationGrid:
+                if (gn.voting):
+                    gn.setUncertainty(-0.5)
+                    if (gn.uncertainty < -1):
+                        gn.uncertainty = -1
+                else:
+                    gn.setUncertainty(0.5)
+                    if (gn.uncertainty > 1):
+                        gn.flipVote()
+                        x = 1 - gn.uncertainty
+                        gn.uncertainty = 1 - x
+        else:
+            print("broadcasted")
+            self.setenergy(30)
+            for gn in populationGrid:
+                if (gn.voting):
+                    gn.setUncertainty(-0.7)
+                    if (gn.uncertainty < -1):
+                        gn.uncertainty = -1
+                else:
+                    gn.setUncertainty(0.7)
+                    if (gn.uncertainty > 1):
+                        gn.flipVote()
+                        x = 1 - gn.uncertainty
+                        gn.uncertainty = 1 - x
 
 
-    def deployGreyAgent(self):
+
+
+    def deployGreyAgent(self,poplist,greylist):
         if (self.greyAgentsAvailable > 0):
             self.greyAgentsAvailable -= 1
+            print("agent deployed")
+            rnum = random.randrange(1,6)
         else:
-            print("No more agents you used all loser")
+            print("No more agents you used all")

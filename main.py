@@ -6,10 +6,11 @@ def main():
         x = int(x)
         ginstance = Gameplay(x)
         ginstance.setup()
-        ginstance.interactionPhase()
-        ginstance.currentBias()
-        ginstance.interactionPhase()
-        ginstance.currentBias()
+        for i in ginstance.poplist:
+            print(i.voting, i.uncertainty)
+        ginstance.blueTeamTurn()
+        for i in ginstance.poplist:
+            print(i.voting, i.uncertainty)
 
     except ValueError:
         print('number must be an int')
