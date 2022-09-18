@@ -25,16 +25,18 @@ class BlueNode:
             print("broadcasted")
             self.setenergy(5)
             for gn in populationGrid:
-                if(gn.voting):
-                    gn.setUncertainty(-0.1)
-                    if(gn.uncertainty < -1):
-                        gn.uncertainty = -1
-                else:
-                    gn.setUncertainty(0.1)
-                    if(gn.uncertainty > 1):
-                        gn.flipVote()
-                        x = 1 - gn.uncertainty
-                        gn.uncertainty = 1 - x
+                influence = random.randrange(1,6)
+                if influence < 4:
+                    if(gn.voting):
+                        gn.setUncertainty(-0.1)
+                        if(gn.uncertainty < -1):
+                            gn.uncertainty = -1
+                    else:
+                        gn.setUncertainty(0.1)
+                        if(gn.uncertainty > 1):
+                            gn.flipVote()
+                            x = 1 - gn.uncertainty
+                            gn.uncertainty = 1 - x
 
         elif(option[1] == 2):
             print("broadcasted")
@@ -42,66 +44,83 @@ class BlueNode:
             print("broadcasted")
             self.setenergy(5)
             for gn in populationGrid:
-                if (gn.voting):
-                    gn.setUncertainty(-0.2)
-                    if (gn.uncertainty < -1):
-                        gn.uncertainty = -1
-                else:
-                    gn.setUncertainty(0.2)
-                    if (gn.uncertainty > 1):
-                        gn.flipVote()
-                        x = 1 - gn.uncertainty
-                        gn.uncertainty = 1 - x
+                influence = random.randrange(1, 6)
+                if influence < 4:
+                    if (gn.voting):
+                        gn.setUncertainty(-0.2)
+                        if (gn.uncertainty < -1):
+                            gn.uncertainty = -1
+                    else:
+                        gn.setUncertainty(0.2)
+                        if (gn.uncertainty > 1):
+                            gn.flipVote()
+                            x = 1 - gn.uncertainty
+                            gn.uncertainty = 1 - x
         elif (option[1] == 3):
             print("broadcasted")
             self.setenergy(15)
             for gn in populationGrid:
-                if (gn.voting):
-                    gn.setUncertainty(-0.4)
-                    if (gn.uncertainty < -1):
-                        gn.uncertainty = -1
-                else:
-                    gn.setUncertainty(0.4)
-                    if (gn.uncertainty > 1):
-                        gn.flipVote()
-                        x = 1 - gn.uncertainty
-                        gn.uncertainty = 1 - x
+                influence = random.randrange(1, 6)
+                if influence < 4:
+                    if (gn.voting):
+                        gn.setUncertainty(-0.4)
+                        if (gn.uncertainty < -1):
+                            gn.uncertainty = -1
+                    else:
+                        gn.setUncertainty(0.4)
+                        if (gn.uncertainty > 1):
+                            gn.flipVote()
+                            x = 1 - gn.uncertainty
+                            gn.uncertainty = 1 - x
         elif (option[1] == 4):
             print("broadcasted")
             self.setenergy(20)
             for gn in populationGrid:
-                if (gn.voting):
-                    gn.setUncertainty(-0.5)
-                    if (gn.uncertainty < -1):
-                        gn.uncertainty = -1
-                else:
-                    gn.setUncertainty(0.5)
-                    if (gn.uncertainty > 1):
-                        gn.flipVote()
-                        x = 1 - gn.uncertainty
-                        gn.uncertainty = 1 - x
+                influence = random.randrange(1, 6)
+                if influence < 4:
+                    if (gn.voting):
+                        gn.setUncertainty(-0.5)
+                        if (gn.uncertainty < -1):
+                            gn.uncertainty = -1
+                    else:
+                        gn.setUncertainty(0.5)
+                        if (gn.uncertainty > 1):
+                            gn.flipVote()
+                            x = 1 - gn.uncertainty
+                            gn.uncertainty = 1 - x
         else:
             print("broadcasted")
             self.setenergy(30)
             for gn in populationGrid:
-                if (gn.voting):
-                    gn.setUncertainty(-0.7)
-                    if (gn.uncertainty < -1):
-                        gn.uncertainty = -1
-                else:
-                    gn.setUncertainty(0.7)
-                    if (gn.uncertainty > 1):
-                        gn.flipVote()
-                        x = 1 - gn.uncertainty
-                        gn.uncertainty = 1 - x
+                influence = random.randrange(1, 6)
+                if influence < 4:
+                    if (gn.voting):
+                        gn.setUncertainty(-0.7)
+                        if (gn.uncertainty < -1):
+                            gn.uncertainty = -1
+                    else:
+                        gn.setUncertainty(0.7)
+                        if (gn.uncertainty > 1):
+                            gn.flipVote()
+                            x = 1 - gn.uncertainty
+                            gn.uncertainty = 1 - x
 
 
 
 
-    def deployGreyAgent(self,poplist,greylist):
+    def deployGreyAgent(self,poplist, grid):
         if (self.greyAgentsAvailable > 0):
             self.greyAgentsAvailable -= 1
             print("agent deployed")
             rnum = random.randrange(1,6)
+            ally = True
+            if(rnum  == 2):
+                ally = False
+            gAgent = GreyNode(len(poplist), ally)
+            poplist.append(gAgent)
+            grid[gAgent.id] = 0
         else:
             print("No more agents you used all")
+
+    def blueAIagen(self):
+        return  10;

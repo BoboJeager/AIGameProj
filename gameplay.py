@@ -11,7 +11,6 @@ class Gameplay:
         self.size = size
         self.grid = {}
         self.poplist = []
-        self.greylist= []
         self.bluePlayer = BlueNode()
 
     def setup(self):
@@ -143,10 +142,13 @@ class Gameplay:
             if(choice == 1):
                 for t in self.bluePlayer.messagesString:
                     print(t[0])
-            option = input("\nwhich message to broadcast?\n")
-            option = int(option)
-            self.bluePlayer.broadcastMessage(self.poplist,option)
-            print(self.bluePlayer.energy)
+                option = input("\nwhich message to broadcast?\n")
+                option = int(option)
+                self.bluePlayer.broadcastMessage(self.poplist,option)
+                print(self.bluePlayer.energy)
+            else:
+                self.bluePlayer.deployGreyAgent(self.poplist,self.grid)
+
         except ValueError:
             print('number must be an int')
 

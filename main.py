@@ -1,16 +1,14 @@
 from gameplay import Gameplay
 
 def main():
-    x = input()
+    x = input("build your grid")
     try:
         x = int(x)
         ginstance = Gameplay(x)
         ginstance.setup()
-        for i in ginstance.poplist:
-            print(i.voting, i.uncertainty)
         ginstance.blueTeamTurn()
-        for i in ginstance.poplist:
-            print(i.voting, i.uncertainty)
+        print(ginstance.poplist)
+        print(ginstance.grid)
 
     except ValueError:
         print('number must be an int')
