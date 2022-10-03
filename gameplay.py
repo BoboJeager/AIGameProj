@@ -2,6 +2,7 @@ import random
 import numpy as np
 from greenNode import greenNode
 from blueNode import BlueNode
+from redNode import RedNode
 from greyNode import GreyNode
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -12,6 +13,7 @@ class Gameplay:
         self.grid = {}
         self.poplist = []
         self.bluePlayer = BlueNode()
+        self.redPlayer = RedNode()
 
     def setup(self):
         dataDist = np.random.pareto(1, self.size) + 1  # Press Ctrl+F8 to toggle the breakpoint.
@@ -162,7 +164,12 @@ class Gameplay:
         except ValueError:
             print('number must be an int')
 
-
+    def redTeamTurn(self):
+        for t in self.redPlayer.messagesString:
+            print(t[0])
+        option = input("\nwhich message to broadcast?\n")
+        option = int(option)
+        self.redPlayer.broadcast(self.poplist, option)
 
 
     def result(self):

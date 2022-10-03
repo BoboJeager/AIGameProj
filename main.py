@@ -6,7 +6,7 @@ def main():
         x = int(x)
         ginstance = Gameplay(x)
         ginstance.setup()
-        ginstance.blueTeamTurn()
+        ginstance.redTeamTurn()
         ginstance.blueTeamTurn()
 
     except ValueError:
