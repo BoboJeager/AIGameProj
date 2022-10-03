@@ -6,9 +6,13 @@ from redNode import RedNode
 from greyNode import GreyNode
 import matplotlib.pyplot as plt
 import matplotlib as mpl
+import networkx as nx
+import plotly.graph_objects as go
+
 
 class Gameplay:
-    def __init__(self,size):
+
+    def __init__(self, size):
         self.size = size
         self.grid = {}
         self.poplist = []
@@ -16,7 +20,8 @@ class Gameplay:
         self.redPlayer = RedNode()
 
     def setup(self):
-        dataDist = np.random.pareto(1, self.size) + 1  # Press Ctrl+F8 to toggle the breakpoint.
+        # Press Ctrl+F8 to toggle the breakpoint.
+        dataDist = np.random.pareto(1, self.size) + 1
         voting = True
         count = 0
         probcurve = []
@@ -35,7 +40,6 @@ class Gameplay:
                 self.poplist.append(g)
                 self.grid[g.id] = 0
                 count += 1
-
 
             elif (i < 5):
                 probcurve.append(2)
@@ -129,14 +133,16 @@ class Gameplay:
         currvotingpercentage = (votingcount/len(self.poplist)) * 100
         uncertaintyavgVoting /= votingcount
         uncertaintyavgNotVoting /= notvotingcount
-        print('people voting =',"{:.1f}".format(currvotingpercentage))
-        print('the uncertainty average of people voting =', "{:.1f}".format(uncertaintyavgVoting))
-        print('the uncertainty average of people NOT voting =', "{:.1f}".format(uncertaintyavgNotVoting))
-
+        print('people voting =', "{:.1f}".format(currvotingpercentage))
+        print('the uncertainty average of people voting =',
+              "{:.1f}".format(uncertaintyavgVoting))
+        print('the uncertainty average of people NOT voting =',
+              "{:.1f}".format(uncertaintyavgNotVoting))
 
     def blueTeamTurn(self):
         print("current energy = ", self.bluePlayer.energy)
-        print("Grey Agents at your disposal = ",self.bluePlayer.greyAgentsAvailable)
+        print("Grey Agents at your disposal = ",
+              self.bluePlayer.greyAgentsAvailable)
         print("press 1 to broadcast message")
         print("press 2 to deploy a grey agent\n")
         choice = input()
@@ -147,11 +153,11 @@ class Gameplay:
                     print(t[0])
                 option = input("\nwhich message to broadcast?\n")
                 option = int(option)
-                self.bluePlayer.broadcastMessage(self.poplist,option)
+                self.bluePlayer.broadcastMessage(self.poplist, option)
                 print(self.bluePlayer.energy)
             else:
                 if(self.bluePlayer.greyAgentsAvailable > 0):
-                    self.bluePlayer.deployGreyAgent(self.poplist,self.grid)
+                    self.bluePlayer.deployGreyAgent(self.poplist, self.grid)
                 else:
                     print("No agents available choose a message to broadcast")
                     for t in self.bluePlayer.messagesString:
@@ -171,6 +177,69 @@ class Gameplay:
         option = int(option)
         self.redPlayer.broadcast(self.poplist, option)
 
-
     def result(self):
         print('You are all winners')
+
+
+    # Function to display the network in its current state, will open a new window each time it is called
+    def displayNetwork(self):
+        Graph = nx.Graph()
+        # Add in edges
+
+        pos = nx.spring_layout(Graph, k=0.5, iterations=100)
+        for n, p in pos.items():
+            Graph.nodes[n]['pos'] = p
+
+        edge_trace = go.Scatter(
+            x=[],
+            y=[],
+            line=dict(width=0.5, color='#888'),
+            hoverinfo='none',
+            mode='lines')
+        for edge in Graph.edges():
+            x0, y0 = Graph.nodes[edge[0]]['pos']
+            x1, y1 = Graph.nodes[edge[1]]['pos']
+            edge_trace['x'] += tuple([x0, x1, None])
+            edge_trace['y'] += tuple([y0, y1, None])
+
+        node_trace = go.Scatter(
+            x=[],
+            y=[],
+            text=[],
+            mode='markers+text',
+            hoverinfo='text',
+            marker=dict(
+                showscale=True,
+                colorscale='pinkyl',
+                reversescale=True,
+                color=[],
+                size=37,
+                colorbar=dict(
+                    thickness=1,
+                    title='Node Connections',
+                    xanchor='left',
+                    titleside='right'),
+                line=dict(width=0)))
+        for node in Graph.nodes():
+            x, y = Graph.nodes[node]['pos']
+            node_trace['x'] += tuple([x])
+            node_trace['y'] += tuple([y])
+        for node, adjacencies in enumerate(Graph.adjacency()):
+            node_trace['marker']['color'] += tuple([len(adjacencies[1])])
+            node_info = adjacencies[0]
+            node_trace['text'] += tuple([node_info])
+
+        title = "Information Modelling - CITS3001"
+        fig = go.Figure(data=[edge_trace, node_trace],
+                        layout=go.Layout(
+                        title=title,
+                        titlefont=dict(size=16),
+                        showlegend=False,
+                        hovermode='closest',
+                        margin=dict(b=21, l=5, r=5, t=40),
+                        annotations=[
+                            dict(text="", showarrow=False, xref="paper", yref="paper")],
+                        xaxis=dict(showgrid=False, zeroline=False,
+                                   showticklabels=False, mirror=True),
+                        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, mirror=True)))
+        fig.show()
