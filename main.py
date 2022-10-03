@@ -7,8 +7,7 @@ def main():
         ginstance = Gameplay(x)
         ginstance.setup()
         ginstance.blueTeamTurn()
-        print(ginstance.poplist)
-        print(ginstance.grid)
+        ginstance.blueTeamTurn()
 
     except ValueError:
         print('number must be an int')

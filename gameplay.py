@@ -134,6 +134,7 @@ class Gameplay:
 
     def blueTeamTurn(self):
         print("current energy = ", self.bluePlayer.energy)
+        print("Grey Agents at your disposal = ",self.bluePlayer.greyAgentsAvailable)
         print("press 1 to broadcast message")
         print("press 2 to deploy a grey agent\n")
         choice = input()
@@ -147,7 +148,16 @@ class Gameplay:
                 self.bluePlayer.broadcastMessage(self.poplist,option)
                 print(self.bluePlayer.energy)
             else:
-                self.bluePlayer.deployGreyAgent(self.poplist,self.grid)
+                if(self.bluePlayer.greyAgentsAvailable > 0):
+                    self.bluePlayer.deployGreyAgent(self.poplist,self.grid)
+                else:
+                    print("No agents available choose a message to broadcast")
+                    for t in self.bluePlayer.messagesString:
+                        print(t[0])
+                    option = input("\nwhich message to broadcast?\n")
+                    option = int(option)
+                    self.bluePlayer.broadcastMessage(self.poplist, option)
+                    print(self.bluePlayer.energy)
 
         except ValueError:
             print('number must be an int')

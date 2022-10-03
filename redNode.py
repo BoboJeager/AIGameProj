@@ -20,7 +20,6 @@ class RedNode:
         print(option[0])
         if option[1] == 1:
             print("broadcasted")
-            self.setenergy(5)
             for gn in populationGrid:
                 influence = random.randrange(1, 6)
                 if influence < 4:
@@ -38,7 +37,6 @@ class RedNode:
 
         elif option[1] == 2:
             print("broadcasted")
-            self.setenergy(10)
             for gn in populationGrid:
                 influence = random.randrange(1, 6)
                 if influence < 4:
@@ -55,7 +53,6 @@ class RedNode:
                             gn.uncertainty = 1 - x
         elif option[1] == 3:
             print("broadcasted")
-            self.setenergy(15)
             for gn in populationGrid:
                 influence = random.randrange(1, 6)
                 if influence < 4:
@@ -72,7 +69,6 @@ class RedNode:
                             gn.uncertainty = 1 - x
         elif option[1] == 4:
             print("broadcasted")
-            self.setenergy(20)
             for gn in populationGrid:
                 influence = random.randrange(1, 6)
                 if influence < 4:
@@ -89,7 +85,6 @@ class RedNode:
                             gn.uncertainty = 1 - x
         else:
             print("broadcasted")
-            self.setenergy(30)
             for gn in populationGrid:
                 influence = random.randrange(1, 6)
                 if influence < 4:

@@ -12,7 +12,7 @@ class BlueNode:
                                ("5. red no good (broadcast power 3)/Energy cost 15",3),("6. boo red fake news (broadcast power 3)/Energy cost 15)",3),
                                ("7. dont belif media pls (broadcast power 4/Energy cost 20)",4),("8. i swear we're better (broadcast power 4/Energy cost 20)",4),
                                ("9. free healthcare (broadcast power 5/Energy cost 30)",5),("10. for the ppl by the ppl (broadcast power 5/Energy cost 30)",5)]
-        self.greyAgentsAvailable = 10
+        self.greyAgentsAvailable = 1
 
     def setenergy(self, value):
         self.energy -= value
