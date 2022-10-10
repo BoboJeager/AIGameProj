@@ -180,11 +180,12 @@ class Gameplay:
     def result(self):
         print('You are all winners')
 
-
     # Function to display the network in its current state, will open a new window each time it is called
+
     def displayNetwork(self):
         Graph = nx.Graph()
         # Add in edges
+        Graph.add_edges_from([(self.grid[1], self.grid[2])])
 
         pos = nx.spring_layout(Graph, k=0.5, iterations=100)
         for n, p in pos.items():
