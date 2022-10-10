@@ -122,5 +122,30 @@ class BlueNode:
         else:
             print("No more agents you used all")
 
-    def blueAIagen(self):
+    def blueAIagent(self):
         return  10;
+
+    def minimax(self, populationList , depth , aiturn):
+        if depth <= 0 or abs(self.analyse(populationList)) > 10000:
+            return self.analyse(populationList)
+
+        if(aiturn):
+            #go through each column
+            currentMaxScore = -100000000
+            for i in range(len(populationList)):
+                newState = populationList.copy()
+                if(len(populationList[i]) < 10):
+                    currentMaxScore= max(currentMaxScore,self.minimax(newState,depth-1,False,"O"))
+                else:
+                    continue
+
+            return currentMaxScore
+        else:
+            currentMinScore = 1000000000
+            for i in range(len(populationList)):
+                newState = populationList.copy()
+                if (len(populationList[i]) < 6):
+                    currentMinScore= min(currentMinScore,self.minimax(newState,depth-1,True,"O"))
+                else:
+                    continue
+            return  currentMinScore

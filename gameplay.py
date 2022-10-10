@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import matplotlib as mpl
 import networkx as nx
 import plotly.graph_objects as go
+import copy
 
 
 class Gameplay:
@@ -244,3 +245,41 @@ class Gameplay:
                                    showticklabels=False, mirror=True),
                         yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, mirror=True)))
         fig.show()
+
+    def analyse(self, populationList, symbol):
+        #check column
+        board = copy.deepcopy(populationList)
+        score = 0
+        weight = {0:0,1:0,2:3,3:400,4:100000}
+        for col in range(len(board)):
+            board[col] += "      "
+            for i in range(6 -3):
+                s = board[col][i] + board[col][i+1] + board[col][i+2] + board[col][i+3]
+                if(s.count("X") == 0):
+                    score -= weight[s.count("O")]
+                if s.count("O") == 0:
+                    score += weight[s.count("X")]
+        for col in range(len(board)-3):
+            for row in range(6):
+                s = board[col][row] + board[col+1][row] + board[col + 2][row] + board[col + 3][row]
+                if (s.count("X") == 0):
+                    score -= weight[s.count("O")]
+                if s.count("O") == 0:
+                    score += weight[s.count("X")]
+        #diagonal
+        for col in range(len(board) - 3):
+            for row in range(3):
+                s = board[col][row] + board[col + 1][row +1] + board[col + 2][row + 2] + board[col + 3][row + 3]
+                if (s.count("X") == 0):
+                    score -= weight[s.count("O")]
+                if s.count("O") == 0:
+                    score += weight[s.count("X")]
+        for col in range(len(board) -1,len(board) - 5,-1):
+            for row in range(3):
+                s = board[col][row] + board[col - 1][row + 1] + board[col - 2][row + 2] + board[col - 3][row + 3]
+                if (s.count("X") == 0):
+                    score -= weight[s.count("O")]
+                if s.count("O") == 0:
+                    score += weight[s.count("X")]
+
+        return score
