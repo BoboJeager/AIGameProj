@@ -4,13 +4,31 @@ from blueNode import BlueNode
 
 def main():
     x = input("Please enter the size for the game: ")
+    startingMaxUncertainty = input("input MAX uncertainty green can have: ")
+    startingMinUncertainty = input("input MIN Uncertainty green can have: ")
+    playerPlayingBlue = False
+    playerPlayingRed = False
+
+    players = input("Players playing: ")
+    if(int(players) > 0):
+        team = input("Do you want to play as blue? (y/n)")
+        if(team == 'y'):
+            playerPlayingBlue = True
+        else:
+            playerPlayingRed = True
+
+
     GameRunning = True
 
     try:
+        startingMaxUncertainty = float(startingMaxUncertainty)
+        startingMinUncertainty = float(startingMinUncertainty)
         x = int(x)
-        ginstance = Gameplay(x)
+        ginstance = Gameplay(x,startingMaxUncertainty,startingMinUncertainty,playerPlayingBlue,playerPlayingRed)
         ginstance.setup()
         ginstance.displayNetwork()
+        for gn in ginstance.poplist:
+            print(gn.uncertainty)
         while GameRunning:
             # If red team has no followers, end game - needs red team follower functionality first
             print("This is the red team's turn")

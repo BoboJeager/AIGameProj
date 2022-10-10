@@ -13,12 +13,16 @@ import copy
 
 class Gameplay:
 
-    def __init__(self, size):
+    def __init__(self, size, maxUncertainty, minUncertainty, blueRealPlayer, redRealPlayer):
         self.size = size
         self.grid = {}
         self.poplist = []
+        self.maxUncertainty = maxUncertainty
+        self.minUncertainty = minUncertainty
         self.bluePlayer = BlueNode()
         self.redPlayer = RedNode()
+        self.blueRealPlayer = blueRealPlayer
+        self.redRealPlayer = redRealPlayer
 
     def setup(self):
         # Press Ctrl+F8 to toggle the breakpoint.
@@ -36,7 +40,7 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = float("{:.1f}".format(random.uniform(-0.7, 0.7)))
+                uncertainty = float("{:.1f}".format(random.uniform(-self.minUncertainty, self.maxUncertainty)))
                 g = greenNode(voting, uncertainty, count)
                 self.poplist.append(g)
                 self.grid[g.id] = 0
@@ -50,7 +54,7 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = float("{:.1f}".format(random.uniform(-0.8, 0.6)))
+                uncertainty = float("{:.1f}".format(random.uniform(-self.minUncertainty, self.maxUncertainty - 0.1)))
                 g = greenNode(voting, uncertainty, count)
                 self.grid[g.id] = 0
                 self.poplist.append(g)
@@ -63,7 +67,7 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = float("{:.1f}".format(random.uniform(-0.9, 0.4)))
+                uncertainty = float("{:.1f}".format(random.uniform(-self.minUncertainty, self.maxUncertainty - 0.2)))
                 g = greenNode(voting, uncertainty, count)
                 self.grid[g.id] = 0
                 self.poplist.append(g)
@@ -76,7 +80,7 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = float("{:.1f}".format(random.uniform(-1, 0.2)))
+                uncertainty = float("{:.1f}".format(random.uniform(-self.minUncertainty, self.maxUncertainty - 0.3)))
                 g = greenNode(voting, uncertainty, count)
                 self.grid[g.id] = 0
                 self.poplist.append(g)
@@ -89,7 +93,7 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = float("{:.1f}".format(random.uniform(-1, 0)))
+                uncertainty = float("{:.1f}".format(random.uniform(-self.minUncertainty, 0)))
                 g = greenNode(voting, uncertainty, count)
                 self.grid[g.id] = 0
                 self.poplist.append(g)
@@ -98,7 +102,7 @@ class Gameplay:
             else:
                 probcurve.append(6)
                 voting = True
-                uncertainty = -1.0
+                uncertainty = -self.minUncertainty
                 g = greenNode(voting, uncertainty, count)
                 self.poplist.append(g)
                 self.grid[g.id] = 0
@@ -141,42 +145,49 @@ class Gameplay:
               "{:.1f}".format(uncertaintyavgNotVoting))
 
     def blueTeamTurn(self):
-        print("current energy = ", self.bluePlayer.energy)
-        print("Grey Agents at your disposal = ",
-              self.bluePlayer.greyAgentsAvailable)
-        print("press 1 to broadcast message")
-        print("press 2 to deploy a grey agent\n")
-        choice = input()
-        try:
-            choice = int(choice)
-            if(choice == 1):
-                for t in self.bluePlayer.messagesString:
-                    print(t[0])
-                option = input("\nwhich message to broadcast?\n")
-                option = int(option)
-                self.bluePlayer.broadcastMessage(self.poplist, option)
-                print(self.bluePlayer.energy)
-            else:
-                if(self.bluePlayer.greyAgentsAvailable > 0):
-                    self.bluePlayer.deployGreyAgent(self.poplist, self.grid)
-                else:
-                    print("No agents available choose a message to broadcast")
+        if(self.blueRealPlayer):
+            print("current energy = ", self.bluePlayer.energy)
+            print("Grey Agents at your disposal = ",
+                  self.bluePlayer.greyAgentsAvailable)
+            print("press 1 to broadcast message")
+            print("press 2 to deploy a grey agent\n")
+            choice = input()
+            try:
+                choice = int(choice)
+                if(choice == 1):
                     for t in self.bluePlayer.messagesString:
                         print(t[0])
                     option = input("\nwhich message to broadcast?\n")
                     option = int(option)
                     self.bluePlayer.broadcastMessage(self.poplist, option)
                     print(self.bluePlayer.energy)
+                else:
+                    if(self.bluePlayer.greyAgentsAvailable > 0):
+                        self.bluePlayer.deployGreyAgent(self.poplist, self.grid)
+                    else:
+                        print("No agents available choose a message to broadcast")
+                        for t in self.bluePlayer.messagesString:
+                            print(t[0])
+                        option = input("\nwhich message to broadcast?\n")
+                        option = int(option)
+                        self.bluePlayer.broadcastMessage(self.poplist, option)
+                        print(self.bluePlayer.energy)
 
-        except ValueError:
-            print('number must be an int')
+            except ValueError:
+                print('number must be an int')
+        else:
+            self.bluePlayer.blueAIagent()
+
 
     def redTeamTurn(self):
-        for t in self.redPlayer.messagesString:
-            print(t[0])
-        option = input("\nwhich message to broadcast?\n")
-        option = int(option)
-        self.redPlayer.broadcast(self.poplist, option)
+        if self.redRealPlayer:
+            for t in self.redPlayer.messagesString:
+                print(t[0])
+            option = input("\nwhich message to broadcast?\n")
+            option = int(option)
+            self.redPlayer.broadcast(self.poplist, option)
+        else:
+            self.redRealPlayer.redAIagent()
 
     def result(self):
         print('You are all winners')
