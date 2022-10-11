@@ -1,6 +1,7 @@
 import random;
 import collections;
 from greyNode import GreyNode;
+from redNode import RedNode;
 
 
 class BlueNode:
@@ -13,6 +14,7 @@ class BlueNode:
                                ("7. dont belif media pls (broadcast power 4/Energy cost 20)",4),("8. i swear we're better (broadcast power 4/Energy cost 20)",4),
                                ("9. free healthcare (broadcast power 5/Energy cost 30)",5),("10. for the ppl by the ppl (broadcast power 5/Energy cost 30)",5)]
         self.greyAgentsAvailable = 1
+        self.redAi = RedNode()
 
     def setenergy(self, value):
         self.energy -= value
@@ -122,30 +124,58 @@ class BlueNode:
         else:
             print("No more agents you used all")
 
-    def blueAIagent(self):
-        return  10;
+    def deploySimulatedGreyAgent(self,poplist):
+            print("agent deployed")
+            rnum = random.randrange(1,6)
+            ally = True
+            if(rnum  == 2):
+                ally = False
+            gAgent = GreyNode(len(poplist), ally)
+            poplist.append(gAgent)
+
+
+    def blueAIagent(self, populationList, grid):
+        moveScores = []
+        for i in range(11):
+            boardcopy = populationList.copy()
+            if (i < 9):
+                self.broadcastMessage(boardcopy, i)
+                score = self.minimax(boardcopy,4,False)
+                moveScores.append(score)
+            else:
+                self.deploySimulatedGreyAgent(boardcopy)
+                score = self.minimax(boardcopy, 4, False)
+                moveScores.append(score)
+        bestNumber = max(moveScores)
+        bestMove = moveScores.index(bestNumber)
+        if(bestMove < 10):
+            self.broadcastMessage(populationList,bestMove)
+        else:
+            self.deployGreyAgent(populationList,grid)
+
+
+
 
     def minimax(self, populationList , depth , aiturn):
-        if depth <= 0 or abs(self.analyse(populationList)) > 10000:
-            return self.analyse(populationList)
+        if depth <= 0 or abs(self.heuristic(populationList)) > 10000:
+            return self.heuristic(populationList)
 
         if(aiturn):
             #go through each column
             currentMaxScore = -100000000
-            for i in range(len(populationList)):
-                newState = populationList.copy()
-                if(len(populationList[i]) < 10):
-                    currentMaxScore= max(currentMaxScore,self.minimax(newState,depth-1,False,"O"))
+            newState = populationList.copy()
+            for i in range(11):
+                if(i < 9):
+                    self.broadcastMessage(newState,i)
                 else:
-                    continue
+                    self.deploySimulatedGreyAgent(newState)
+                currentMaxScore= max(currentMaxScore,self.minimax(newState,depth-1,False))
 
             return currentMaxScore
         else:
             currentMinScore = 1000000000
-            for i in range(len(populationList)):
-                newState = populationList.copy()
-                if (len(populationList[i]) < 6):
-                    currentMinScore= min(currentMinScore,self.minimax(newState,depth-1,True,"O"))
-                else:
-                    continue
+            newState = populationList.copy()
+            for i in range(10):
+                self.redAi.broadcast(newState,i)
+                currentMinScore= min(currentMinScore,self.minimax(newState,depth-1,True))
             return  currentMinScore
