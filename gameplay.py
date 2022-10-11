@@ -40,7 +40,8 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = float("{:.1f}".format(random.uniform(-self.minUncertainty, self.maxUncertainty)))
+                uncertainty = float("{:.1f}".format(
+                    random.uniform(-self.minUncertainty, self.maxUncertainty)))
                 g = greenNode(voting, uncertainty, count)
                 self.poplist.append(g)
                 self.grid[g.id] = 0
@@ -54,7 +55,8 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = float("{:.1f}".format(random.uniform(-self.minUncertainty, self.maxUncertainty - 0.1)))
+                uncertainty = float("{:.1f}".format(
+                    random.uniform(-self.minUncertainty, self.maxUncertainty - 0.1)))
                 g = greenNode(voting, uncertainty, count)
                 self.grid[g.id] = 0
                 self.poplist.append(g)
@@ -67,7 +69,8 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = float("{:.1f}".format(random.uniform(-self.minUncertainty, self.maxUncertainty - 0.2)))
+                uncertainty = float("{:.1f}".format(
+                    random.uniform(-self.minUncertainty, self.maxUncertainty - 0.2)))
                 g = greenNode(voting, uncertainty, count)
                 self.grid[g.id] = 0
                 self.poplist.append(g)
@@ -80,7 +83,8 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = float("{:.1f}".format(random.uniform(-self.minUncertainty, self.maxUncertainty - 0.3)))
+                uncertainty = float("{:.1f}".format(
+                    random.uniform(-self.minUncertainty, self.maxUncertainty - 0.3)))
                 g = greenNode(voting, uncertainty, count)
                 self.grid[g.id] = 0
                 self.poplist.append(g)
@@ -93,7 +97,8 @@ class Gameplay:
                 else:
                     voting = False
 
-                uncertainty = float("{:.1f}".format(random.uniform(-self.minUncertainty, 0)))
+                uncertainty = float("{:.1f}".format(
+                    random.uniform(-self.minUncertainty, 0)))
                 g = greenNode(voting, uncertainty, count)
                 self.grid[g.id] = 0
                 self.poplist.append(g)
@@ -143,6 +148,11 @@ class Gameplay:
               "{:.1f}".format(uncertaintyavgVoting))
         print('the uncertainty average of people NOT voting =',
               "{:.1f}".format(uncertaintyavgNotVoting))
+        return_list = []
+        return_list.append(currvotingpercentage)
+        return_list.append(uncertaintyavgVoting)
+        return_list.append(uncertaintyavgNotVoting)
+        return return_list
 
     def blueTeamTurn(self):
         if(self.blueRealPlayer):
@@ -163,7 +173,8 @@ class Gameplay:
                     print(self.bluePlayer.energy)
                 else:
                     if(self.bluePlayer.greyAgentsAvailable > 0):
-                        self.bluePlayer.deployGreyAgent(self.poplist, self.grid)
+                        self.bluePlayer.deployGreyAgent(
+                            self.poplist, self.grid)
                     else:
                         print("No agents available choose a message to broadcast")
                         for t in self.bluePlayer.messagesString:
@@ -177,7 +188,6 @@ class Gameplay:
                 print('number must be an int')
         else:
             self.bluePlayer.blueAIagent()
-
 
     def redTeamTurn(self):
         if self.redRealPlayer:
@@ -257,37 +267,138 @@ class Gameplay:
                         yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, mirror=True)))
         fig.show()
 
+    def heuristic(self):  # To be condensed later
+        # Score to be returned
+        score = 0
+        # Associated weight - randomly exponential (will need proper scores in the future)
+        weight = {1: 0, 2: 2, 3: 6, 4: 15, 5: 30,
+                  6: 70, 7: 150, 8: 400, 9: 2000, 10: 100000}
+        # Avglist is copied from currentBias, has the current voting averages in order of percentage of people voting,
+        # uncertainty average of people voting, and uncertainty average of people not voting
+        AvgList = []
+        AvgList = Gameplay.currentBias(self)
+        # Difference between the two uncertainties
+        UncertaintyDiff = self.maxUncertainty + self.minUncertainty
+        # Difference between avg uncertainties
+        CurrUncertaintyDiff = AvgList[1] - AvgList[2]
+        print(UncertaintyDiff)
+        # Make positive
+        CurrUncertaintyDiff = abs(CurrUncertaintyDiff)
+        print(UncertaintyDiff)
+        # Print statements for testing
+        # print("Test print statements in heuristic")
+        # print(UncertaintyDiff)
+        # print(CurrUncertaintyDiff)
+        # print(CurrUncertaintyDiff/UncertaintyDiff)
+        # If percentage of pop voting is above 50 (majority aligned with blue) so return positive values
+        if AvgList[0] >= 50:
+            # High difference (closer to 1) # Could use this method
+            if CurrUncertaintyDiff/UncertaintyDiff == 1:
+                score += weight[10]
+            # High diff
+            elif CurrUncertaintyDiff/UncertaintyDiff >= 0.9:
+                score += weight[9]
+            # High diff
+            elif CurrUncertaintyDiff/UncertaintyDiff >= 0.8:
+                score += weight[8]
+            # Medium high diff
+            elif CurrUncertaintyDiff/UncertaintyDiff >= 0.7:
+                score += weight[7]
+            # Medium diff
+            elif CurrUncertaintyDiff/UncertaintyDiff >= 0.6:
+                score += weight[6]
+             # Medium diff
+            elif CurrUncertaintyDiff/UncertaintyDiff >= 0.5:
+                score += weight[5]
+            # medium diff
+            elif CurrUncertaintyDiff/UncertaintyDiff >= 0.4:
+                score += weight[4]
+            # Medium Low diff
+            elif CurrUncertaintyDiff/UncertaintyDiff >= 0.3:
+                score += weight[3]
+            # Low diff
+            elif CurrUncertaintyDiff/UncertaintyDiff >= 0.2:
+                score += weight[2]
+            # Low diff
+            elif CurrUncertaintyDiff/UncertaintyDiff >= 0.1:
+                score += weight[1]
+            # Non-existent
+            elif CurrUncertaintyDiff/UncertaintyDiff < 0.1:
+                score += weight[1]
+        # Else percentage of pop voting is below 50 (majority aligned with red) so return negative values
+        else:
+            # High difference (closer to 1) # Could use this method
+            if CurrUncertaintyDiff/UncertaintyDiff == 1:
+                score -= weight[10]
+            # High diff
+            if CurrUncertaintyDiff/UncertaintyDiff >= 0.9:
+                score -= weight[9]
+            # High diff
+            if CurrUncertaintyDiff/UncertaintyDiff >= 0.8:
+                score -= weight[8]
+            # Medium high diff
+            if CurrUncertaintyDiff/UncertaintyDiff >= 0.7:
+                score -= weight[7]
+            # Medium diff
+            if CurrUncertaintyDiff/UncertaintyDiff >= 0.6:
+                score -= weight[6]
+             # Medium diff
+            if CurrUncertaintyDiff/UncertaintyDiff >= 0.5:
+                score -= weight[5]
+            # medium diff
+            if CurrUncertaintyDiff/UncertaintyDiff >= 0.4:
+                score -= weight[4]
+            # Medium Low diff
+            if CurrUncertaintyDiff/UncertaintyDiff >= 0.3:
+                score -= weight[3]
+            # Low diff
+            if CurrUncertaintyDiff/UncertaintyDiff >= 0.2:
+                score -= weight[2]
+            # Low diff
+            if CurrUncertaintyDiff/UncertaintyDiff >= 0.1:
+                score -= weight[1]
+            # Non-existent
+            if CurrUncertaintyDiff/UncertaintyDiff < 0.1:
+                score -= weight[1]
+        # print("Testing what score returns: ")
+        # print(score)
+        return score
+
     def analyse(self, populationList, symbol):
-        #check column
+        # check column
         board = copy.deepcopy(populationList)
         score = 0
-        weight = {0:0,1:0,2:3,3:400,4:100000}
+        weight = {0: 0, 1: 0, 2: 3, 3: 400, 4: 100000}
         for col in range(len(board)):
             board[col] += "      "
-            for i in range(6 -3):
-                s = board[col][i] + board[col][i+1] + board[col][i+2] + board[col][i+3]
+            for i in range(6 - 3):
+                s = board[col][i] + board[col][i+1] + \
+                    board[col][i+2] + board[col][i+3]
                 if(s.count("X") == 0):
                     score -= weight[s.count("O")]
                 if s.count("O") == 0:
                     score += weight[s.count("X")]
         for col in range(len(board)-3):
             for row in range(6):
-                s = board[col][row] + board[col+1][row] + board[col + 2][row] + board[col + 3][row]
+                s = board[col][row] + board[col+1][row] + \
+                    board[col + 2][row] + board[col + 3][row]
                 if (s.count("X") == 0):
                     score -= weight[s.count("O")]
                 if s.count("O") == 0:
                     score += weight[s.count("X")]
-        #diagonal
+        # diagonal
         for col in range(len(board) - 3):
             for row in range(3):
-                s = board[col][row] + board[col + 1][row +1] + board[col + 2][row + 2] + board[col + 3][row + 3]
+                s = board[col][row] + board[col + 1][row + 1] + \
+                    board[col + 2][row + 2] + board[col + 3][row + 3]
                 if (s.count("X") == 0):
                     score -= weight[s.count("O")]
                 if s.count("O") == 0:
                     score += weight[s.count("X")]
-        for col in range(len(board) -1,len(board) - 5,-1):
+        for col in range(len(board) - 1, len(board) - 5, -1):
             for row in range(3):
-                s = board[col][row] + board[col - 1][row + 1] + board[col - 2][row + 2] + board[col - 3][row + 3]
+                s = board[col][row] + board[col - 1][row + 1] + \
+                    board[col - 2][row + 2] + board[col - 3][row + 3]
                 if (s.count("X") == 0):
                     score -= weight[s.count("O")]
                 if s.count("O") == 0:
