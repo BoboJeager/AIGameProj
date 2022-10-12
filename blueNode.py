@@ -151,19 +151,19 @@ class BlueNode:
         gAgent = GreyNode(len(poplist), ally)
         poplist.append(gAgent)
 
-    def blueAIagent(self, populationList, grid, startingMaxUncertainty):
+    def blueAIagent(self, populationList, grid, startingMaxUncertainty, startingMinUncertainty):
         moveScores = []
         for i in range(11):
             boardcopy = populationList.copy()
             if (i < 9):
                 self.broadcastMessage(boardcopy, i)
                 score = self.minimax(boardcopy, 3, False,
-                                     startingMaxUncertainty)
+                                     startingMaxUncertainty, startingMinUncertainty)
                 moveScores.append(score)
             else:
                 self.deploySimulatedGreyAgent(boardcopy)
                 score = self.minimax(boardcopy, 3, False,
-                                     startingMaxUncertainty)
+                                     startingMaxUncertainty, startingMinUncertainty)
                 moveScores.append(score)
         bestNumber = max(moveScores)
         bestMove = moveScores.index(bestNumber)
@@ -174,9 +174,9 @@ class BlueNode:
         else:
             self.deployGreyAgent(populationList, grid)
 
-    def minimax(self, populationList, depth, aiturn, startingUncertainty):
-        if depth <= 0 or abs(self.blueHeuristic(populationList, startingUncertainty)) > 10000:
-            return self.blueHeuristic(populationList, startingUncertainty)
+    def minimax(self, populationList, depth, aiturn, startingUncertainty, startingMinUncertainty):
+        if depth <= 0 or abs(self.blueHeuristic(populationList, startingUncertainty, startingMinUncertainty)) > 10000:
+            return self.blueHeuristic(populationList, startingUncertainty, startingMinUncertainty)
 
         if(aiturn):
             # go through each column
@@ -188,7 +188,7 @@ class BlueNode:
                 else:
                     self.deploySimulatedGreyAgent(newState)
                 currentMaxScore = max(
-                    currentMaxScore, self.minimax(newState, depth-1, False, startingUncertainty))
+                    currentMaxScore, self.minimax(newState, depth-1, False, startingUncertainty, startingMinUncertainty))
 
             return currentMaxScore
         else:
@@ -197,10 +197,12 @@ class BlueNode:
             for i in range(10):
                 self.redAi.broadcast(newState, i)
                 currentMinScore = min(
-                    currentMinScore, self.minimax(newState, depth-1, True, startingUncertainty))
+                    currentMinScore, self.minimax(newState, depth-1, True, startingUncertainty, startingMinUncertainty))
             return currentMinScore
 
-    def blueHeuristic(self, populationlist, startingMaxUncertainty):
+    # Iteration number 3 now
+
+    def blueHeuristic(self, populationlist, startingMaxUncertainty, startingMinUncertainty):
         # Score to be returned
         score = 0
         # Associated weight to be added to the score
@@ -221,11 +223,11 @@ class BlueNode:
 
         currvotingpercentage = (votingcount/len(populationlist)) * 100
         if votingcount == 0:
-            score -= 1000000
+            score -= 10000000
         else:
             uncertaintyavgVoting /= votingcount
         if notvotingcount == 0:
-            score += 1000000
+            score += 10000000
 
         # Probably don't need these calculations, make sure to remove as parameters
         # CurrUncertaintyDiff = uncertaintyavgVoting - uncertaintyavgNotVoting
@@ -239,76 +241,93 @@ class BlueNode:
         # Blue Bias so make higher for red and lower for blue
         if currvotingpercentage >= 75:
             # High voting percentage and very certain so add low score
-            if (uncertaintyavgVoting > (startingMaxUncertainty / 1.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2)):
-                score -= weight[9]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2.4)):
-                score -= weight[8]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3)):
+            if (uncertaintyavgVoting > (startingMaxUncertainty / 1.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2.2)):
                 score -= weight[7]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3.6)):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2.2)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2.9)):
                 score -= weight[6]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3.6)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.3)):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2.9)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3.5)):
+                score -= weight[5]
+            elif (uncertaintyavgVoting < (startingMaxUncertainty / 3.5)) and (uncertaintyavgVoting > 0):
+                score += weight[2]
+            elif (uncertaintyavgVoting <= 0) and (uncertaintyavgVoting > (startingMinUncertainty / 6)):
+                score += weight[3]
+            elif (uncertaintyavgVoting < 0) and (uncertaintyavgVoting > (startingMinUncertainty / 2.3)):
                 score += weight[4]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 4.3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 5)):
+            elif (uncertaintyavgVoting < 0) and (uncertaintyavgVoting > (startingMinUncertainty / 1.5)):
                 score += weight[5]
             else:
-                score += weight[1]
+                score += weight[6]
 
         elif currvotingpercentage >= 50 and currvotingpercentage < 75:
 
             # Still blue bias, so add medium-low score
             # High voting percentage and very certain so add low score.
-            if (uncertaintyavgVoting > (startingMaxUncertainty / 1.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2)):
+            if (uncertaintyavgVoting > (startingMaxUncertainty / 1.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2.2)):
                 score -= weight[7]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2.4)):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2.2)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2.9)):
                 score -= weight[6]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3)):
-                score -= weight[3]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3.6)):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2.9)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3.5)):
+                score -= weight[4]
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3.5)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.2)):
+                score += weight[2]
+            elif (uncertaintyavgVoting < (startingMaxUncertainty / 4.2)) and (uncertaintyavgVoting > 0):
                 score += weight[3]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3.6)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.3)):
+            elif (uncertaintyavgVoting <= 0) and (uncertaintyavgVoting > (startingMinUncertainty / 6)):
                 score += weight[4]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 4.3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.7)):
+            elif (uncertaintyavgVoting < 0) and (uncertaintyavgVoting > (startingMinUncertainty / 4)):
                 score += weight[5]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 4.7)) and (uncertaintyavgVoting < (startingMaxUncertainty / 5.2)):
+            elif (uncertaintyavgVoting < 0) and (uncertaintyavgVoting > (startingMinUncertainty / 3)):
                 score += weight[6]
-            else:
+            elif (uncertaintyavgVoting < 0) and (uncertaintyavgVoting > (startingMinUncertainty / 1.5)):
                 score += weight[7]
+            else:
+                score += weight[8]
 
         # Red bias so make higher for blue lower for red
         elif currvotingpercentage >= 25 and currvotingpercentage < 50:
             # Low voting percentage for blue, add higher scores
-
-            if (uncertaintyavgVoting > (startingMaxUncertainty / 1.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2)):
-                score -= weight[4]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2.4)):
-                score -= weight[3]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3)):
-                score -= weight[2]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3.6)):
-                score += weight[5]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3.6)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.3)):
-                score += weight[6]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 4.3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.7)):
-                score += weight[7]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 4.7)) and (uncertaintyavgVoting < (startingMaxUncertainty / 5.2)):
-                score += weight[8]
+            if uncertaintyavgVoting > 0:
+                if (uncertaintyavgVoting > (startingMaxUncertainty / 1.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2.2)):
+                    score -= weight[4]
+                elif (uncertaintyavgVoting > (startingMaxUncertainty / 2.2)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2.9)):
+                    score -= weight[3]
+                elif (uncertaintyavgVoting > (startingMaxUncertainty / 2.9)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3.5)):
+                    score -= weight[2]
+                elif (uncertaintyavgVoting > (startingMaxUncertainty / 3.5)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.2)):
+                    score += weight[3]
+                elif (uncertaintyavgVoting < (startingMaxUncertainty / 4.2)) and (uncertaintyavgVoting > 0):
+                    score += weight[4]
             else:
-                score += weight[9]
+                if (uncertaintyavgVoting <= 0) and (uncertaintyavgVoting > (startingMinUncertainty / 5)):
+                    score += weight[5]
+                elif (uncertaintyavgVoting < 0) and (uncertaintyavgVoting > (startingMinUncertainty / 3.5)):
+                    score += weight[6]
+                elif (uncertaintyavgVoting < 0) and (uncertaintyavgVoting > (startingMinUncertainty / 2.4)):
+                    score += weight[7]
+                elif (uncertaintyavgVoting < 0) and (uncertaintyavgVoting > (startingMinUncertainty / 1.2)):
+                    score += weight[8]
+                else:
+                    score += weight[9]
 
         elif currvotingpercentage < 25 and currvotingpercentage > 10:
             # Very low voting percentage for blue, add very high scores
             if (uncertaintyavgVoting > (startingMaxUncertainty / 1.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2.4)):
                 score -= weight[3]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3)):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3)):
                 score -= weight[2]
             elif (uncertaintyavgVoting > (startingMaxUncertainty / 3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3.6)):
-                score += weight[6]
+                score += weight[3]
             elif (uncertaintyavgVoting > (startingMaxUncertainty / 3.6)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.3)):
+                score += weight[4]
+            elif (uncertaintyavgVoting < (startingMaxUncertainty / 4.3)) and (uncertaintyavgVoting > 0):
+                score += weight[5]
+            elif (uncertaintyavgVoting <= 0) and (uncertaintyavgVoting > (startingMinUncertainty / 6)):
+                score += weight[6]
+            elif (uncertaintyavgVoting < 0) and (uncertaintyavgVoting > (startingMinUncertainty / 4)):
                 score += weight[7]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 4.3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.9)):
+            elif (uncertaintyavgVoting < 0) and (uncertaintyavgVoting > (startingMinUncertainty / 3)):
                 score += weight[8]
-            elif (uncertaintyavgVoting > (startingMaxUncertainty / 4.9)) and (uncertaintyavgVoting < (startingMaxUncertainty / 6)):
+            elif (uncertaintyavgVoting < 0) and (uncertaintyavgVoting > (startingMinUncertainty / 1.5)):
                 score += weight[9]
             else:
                 score += weight[10]
