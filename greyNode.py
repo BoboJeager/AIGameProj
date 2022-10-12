@@ -7,4 +7,10 @@ class GreyNode:
         self.id = id
         self.ally = isAlly
         self.voting = isAlly
-        self.uncertain = -1
+        self.uncertainty = -1
+
+    def setUncertainty(self, number):
+        self.uncertainty = -1
+
+    def flipVote(self):
+        self.voting = self.ally

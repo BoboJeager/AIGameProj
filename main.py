@@ -39,10 +39,10 @@ def main():
             print(gn.uncertainty)
         while GameRunning:
             # ginstance.currentBias()
-            ginstance.heuristic()
+            # ginstance.heuristic()
             # If red team has no followers, end game - needs red team follower functionality first
-            print("This is the red team's turn")
-            ginstance.redTeamTurn()
+            # print("This is the red team's turn")
+            # ginstance.redTeamTurn()
 
             if ginstance.bluePlayer.energy <= 0:
                 GameRunning = False

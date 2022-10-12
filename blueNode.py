@@ -3,6 +3,7 @@ import collections
 from unittest import case
 from greyNode import GreyNode
 from redNode import RedNode
+from greenNode import greenNode
 
 
 class BlueNode:
@@ -31,18 +32,21 @@ class BlueNode:
             print("broadcasted")
             self.setenergy(5)
             for gn in populationGrid:
-                influence = random.randrange(1, 6)
-                if influence < 4:
-                    if(gn.voting):
-                        gn.setUncertainty(-0.1)
-                        if(gn.uncertainty < -1):
-                            gn.uncertainty = -1
-                    else:
-                        gn.setUncertainty(0.1)
-                        if(gn.uncertainty > 1):
-                            gn.flipVote()
-                            x = 1 - gn.uncertainty
-                            gn.uncertainty = 1 - x
+                if isinstance(gn,greenNode):
+                    influence = random.randrange(1, 6)
+                    if influence < 4:
+                        if(gn.voting):
+                            gn.setUncertainty(-0.1)
+                            if(gn.uncertainty < -1):
+                                gn.uncertainty = -1
+                        else:
+                            gn.setUncertainty(0.1)
+                            if(gn.uncertainty > 1):
+                                gn.flipVote()
+                                x = 1 - gn.uncertainty
+                                gn.uncertainty = 1 - x
+                else:
+                    continue
 
         elif(option[1] == 2):
             print("broadcasted")
@@ -50,66 +54,79 @@ class BlueNode:
             print("broadcasted")
             self.setenergy(5)
             for gn in populationGrid:
-                influence = random.randrange(1, 6)
-                if influence < 4:
-                    if (gn.voting):
-                        gn.setUncertainty(-0.2)
-                        if (gn.uncertainty < -1):
-                            gn.uncertainty = -1
-                    else:
-                        gn.setUncertainty(0.2)
-                        if (gn.uncertainty > 1):
-                            gn.flipVote()
-                            x = 1 - gn.uncertainty
-                            gn.uncertainty = 1 - x
+                if isinstance(gn, greenNode):
+                    influence = random.randrange(1, 6)
+                    if influence < 4:
+                        if (gn.voting):
+                            gn.setUncertainty(-0.2)
+                            if (gn.uncertainty < -1):
+                                gn.uncertainty = -1
+                        else:
+                            gn.setUncertainty(0.2)
+                            if (gn.uncertainty > 1):
+                                gn.flipVote()
+                                x = 1 - gn.uncertainty
+                                gn.uncertainty = 1 - x
+                else:
+                    continue
+
         elif (option[1] == 3):
             print("broadcasted")
             self.setenergy(15)
             for gn in populationGrid:
-                influence = random.randrange(1, 6)
-                if influence < 4:
-                    if (gn.voting):
-                        gn.setUncertainty(-0.4)
-                        if (gn.uncertainty < -1):
-                            gn.uncertainty = -1
-                    else:
-                        gn.setUncertainty(0.4)
-                        if (gn.uncertainty > 1):
-                            gn.flipVote()
-                            x = 1 - gn.uncertainty
-                            gn.uncertainty = 1 - x
+                if isinstance(gn, greenNode):
+                    influence = random.randrange(1, 6)
+                    if influence < 4:
+                        if (gn.voting):
+                            gn.setUncertainty(-0.4)
+                            if (gn.uncertainty < -1):
+                                gn.uncertainty = -1
+                        else:
+                            gn.setUncertainty(0.4)
+                            if (gn.uncertainty > 1):
+                                gn.flipVote()
+                                x = 1 - gn.uncertainty
+                                gn.uncertainty = 1 - x
+                else:
+                    continue
         elif (option[1] == 4):
             print("broadcasted")
             self.setenergy(20)
             for gn in populationGrid:
-                influence = random.randrange(1, 6)
-                if influence < 4:
-                    if (gn.voting):
-                        gn.setUncertainty(-0.5)
-                        if (gn.uncertainty < -1):
-                            gn.uncertainty = -1
-                    else:
-                        gn.setUncertainty(0.5)
-                        if (gn.uncertainty > 1):
-                            gn.flipVote()
-                            x = 1 - gn.uncertainty
-                            gn.uncertainty = 1 - x
+                if isinstance(gn, greenNode):
+                    influence = random.randrange(1, 6)
+                    if influence < 4:
+                        if (gn.voting):
+                            gn.setUncertainty(-0.5)
+                            if (gn.uncertainty < -1):
+                                gn.uncertainty = -1
+                        else:
+                            gn.setUncertainty(0.5)
+                            if (gn.uncertainty > 1):
+                                gn.flipVote()
+                                x = 1 - gn.uncertainty
+                                gn.uncertainty = 1 - x
+                else:
+                    continue
         else:
             print("broadcasted")
             self.setenergy(30)
             for gn in populationGrid:
-                influence = random.randrange(1, 6)
-                if influence < 4:
-                    if (gn.voting):
-                        gn.setUncertainty(-0.7)
-                        if (gn.uncertainty < -1):
-                            gn.uncertainty = -1
-                    else:
-                        gn.setUncertainty(0.7)
-                        if (gn.uncertainty > 1):
-                            gn.flipVote()
-                            x = 1 - gn.uncertainty
-                            gn.uncertainty = 1 - x
+                if isinstance(gn, greenNode):
+                    influence = random.randrange(1, 6)
+                    if influence < 4:
+                        if (gn.voting):
+                            gn.setUncertainty(-0.7)
+                            if (gn.uncertainty < -1):
+                                gn.uncertainty = -1
+                        else:
+                            gn.setUncertainty(0.7)
+                            if (gn.uncertainty > 1):
+                                gn.flipVote()
+                                x = 1 - gn.uncertainty
+                                gn.uncertainty = 1 - x
+                else:
+                    continue
 
     def deployGreyAgent(self, poplist, grid):
         if (self.greyAgentsAvailable > 0):
@@ -134,28 +151,30 @@ class BlueNode:
         gAgent = GreyNode(len(poplist), ally)
         poplist.append(gAgent)
 
-    def blueAIagent(self, populationList, grid):
+    def blueAIagent(self, populationList, grid, startingMaxUncertainty):
         moveScores = []
         for i in range(11):
             boardcopy = populationList.copy()
             if (i < 9):
                 self.broadcastMessage(boardcopy, i)
-                score = self.minimax(boardcopy, 4, False)
+                score = self.minimax(boardcopy, 3, False,startingMaxUncertainty)
                 moveScores.append(score)
             else:
                 self.deploySimulatedGreyAgent(boardcopy)
-                score = self.minimax(boardcopy, 4, False)
+                score = self.minimax(boardcopy, 3, False,startingMaxUncertainty)
                 moveScores.append(score)
         bestNumber = max(moveScores)
         bestMove = moveScores.index(bestNumber)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",moveScores)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",bestMove)
         if(bestMove < 10):
             self.broadcastMessage(populationList, bestMove)
         else:
             self.deployGreyAgent(populationList, grid)
 
-    def minimax(self, populationList, depth, aiturn):
-        if depth <= 0 or abs(self.heuristic(populationList)) > 10000:
-            return self.heuristic(populationList)
+    def minimax(self, populationList, depth, aiturn, startingUncertainty):
+        if depth <= 0 or abs(self.blueHeuristic(populationList,startingUncertainty)) > 10000:
+            return self.blueHeuristic(populationList,startingUncertainty)
 
         if(aiturn):
             # go through each column
@@ -167,7 +186,7 @@ class BlueNode:
                 else:
                     self.deploySimulatedGreyAgent(newState)
                 currentMaxScore = max(
-                    currentMaxScore, self.minimax(newState, depth-1, False))
+                    currentMaxScore, self.minimax(newState, depth-1, False,startingUncertainty))
 
             return currentMaxScore
         else:
@@ -176,7 +195,7 @@ class BlueNode:
             for i in range(10):
                 self.redAi.broadcast(newState, i)
                 currentMinScore = min(
-                    currentMinScore, self.minimax(newState, depth-1, True))
+                    currentMinScore, self.minimax(newState, depth-1, True,startingUncertainty))
             return currentMinScore
 
     def blueHeuristic(self, populationlist, startingMaxUncertainty):
@@ -199,8 +218,12 @@ class BlueNode:
                 uncertaintyavgNotVoting += agent.uncertainty
 
         currvotingpercentage = (votingcount/len(populationlist)) * 100
-        uncertaintyavgVoting /= votingcount
-        uncertaintyavgNotVoting /= notvotingcount
+        if votingcount == 0:
+            score -= 1000000
+        else:
+            uncertaintyavgVoting /= votingcount
+        if notvotingcount == 0:
+            score += 1000000
         # Probably don't need these calculations, make sure to remove as parameters
         # CurrUncertaintyDiff = uncertaintyavgVoting - uncertaintyavgNotVoting
         # CurrUncertaintyDiff = abs(CurrUncertaintyDiff)
@@ -209,49 +232,60 @@ class BlueNode:
         # Blue Bias so make higher for red and lower for blue
         if currvotingpercentage >= 75:
             # High voting percentage and very certain so add low score
-            if uncertaintyavgVoting > (startingMaxUncertainty/1.4):
+            if uncertaintyavgVoting > (startingMaxUncertainty / 1.4):
                 score += weight[1]
-            if uncertaintyavgVoting > (startingMaxUncertainty/2):
+            elif uncertaintyavgVoting > (startingMaxUncertainty / 2):
                 score += weight[2]
-            if uncertaintyavgVoting > (startingMaxUncertainty/2.4):
+            elif uncertaintyavgVoting > (startingMaxUncertainty / 2.4):
                 score += weight[3]
-            if uncertaintyavgVoting > (startingMaxUncertainty/3):
+            elif uncertaintyavgVoting > (startingMaxUncertainty / 3):
                 score += weight[4]
+            else:
+                score += weight[5]
+
 
         elif currvotingpercentage >= 50 and currvotingpercentage < 75:
+
             # Still blue bias, so add medium-low score
             # High voting percentage and very certain so add low score
-            if uncertaintyavgVoting > (startingMaxUncertainty/1.4):
+            if uncertaintyavgVoting > (startingMaxUncertainty / 1.4):
                 score += weight[3]
-            if uncertaintyavgVoting > (startingMaxUncertainty/2):
+            elif uncertaintyavgVoting > (startingMaxUncertainty / 2):
                 score += weight[4]
-            if uncertaintyavgVoting > (startingMaxUncertainty/2.4):
+            elif uncertaintyavgVoting > (startingMaxUncertainty / 2.4):
                 score += weight[5]
-            if uncertaintyavgVoting > (startingMaxUncertainty/3):
+            elif uncertaintyavgVoting > (startingMaxUncertainty / 3):
                 score += weight[6]
+            else:
+                score += weight[7]
 
         # Red bias so make higher for blue lower for red
         elif currvotingpercentage >= 25 and currvotingpercentage < 50:
             # Low voting percentage for blue, add higher scores
-            if uncertaintyavgVoting > (startingMaxUncertainty/1.4):
+            if uncertaintyavgVoting > (startingMaxUncertainty / 1.4):
                 score += weight[4]
-            if uncertaintyavgVoting > (startingMaxUncertainty/2):
+            elif uncertaintyavgVoting > (startingMaxUncertainty / 2):
                 score += weight[5]
-            if uncertaintyavgVoting > (startingMaxUncertainty/2.4):
+            elif uncertaintyavgVoting > (startingMaxUncertainty / 2.4):
                 score += weight[6]
-            if uncertaintyavgVoting > (startingMaxUncertainty/3):
+            elif uncertaintyavgVoting > (startingMaxUncertainty / 3):
                 score += weight[7]
+            else:
+                score += weight[9]
+
 
         elif currvotingpercentage < 25 and currvotingpercentage > 10:
             # Very low voting percentage for blue, add very high scores
-            if uncertaintyavgVoting > (startingMaxUncertainty/1.4):
+            if uncertaintyavgVoting > (startingMaxUncertainty / 1.4):
                 score += weight[6]
-            if uncertaintyavgVoting > (startingMaxUncertainty/2):
+            elif uncertaintyavgVoting > (startingMaxUncertainty / 2):
                 score += weight[7]
-            if uncertaintyavgVoting > (startingMaxUncertainty/2.4):
+            elif uncertaintyavgVoting > (startingMaxUncertainty / 2.4):
                 score += weight[8]
-            if uncertaintyavgVoting > (startingMaxUncertainty/3):
+            elif uncertaintyavgVoting > (startingMaxUncertainty / 3):
                 score += weight[9]
+            else:
+                score += weight[10]
 
         elif currvotingpercentage <= 10:
             # Next to zero voting percentage in favour of blue, add the highest weight to score
