@@ -232,20 +232,24 @@ class BlueNode:
         # CurrUncertaintyDiff = abs(CurrUncertaintyDiff)
         # ChangedUncertaintyDiff = CurrUncertaintyDiff/UncertaintyDiff
 
+        # Heuristic is not working properly - likely due to the fact uncertaintyavgVoting
+        # which can be a negative value which breaks the whole heuristic by going straight to the
+        # 'else' statement and displaying that score += weight
+
         # Blue Bias so make higher for red and lower for blue
         if currvotingpercentage >= 75:
             # High voting percentage and very certain so add low score
-            if uncertaintyavgVoting > (startingMaxUncertainty / 1.4):
+            if (uncertaintyavgVoting > (startingMaxUncertainty / 1.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2)):
                 score -= weight[9]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 2):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2.4)):
                 score -= weight[8]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 2.4):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3)):
                 score -= weight[7]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 3):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3.6)):
                 score -= weight[6]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 3.6):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3.6)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.3)):
                 score += weight[4]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 4.3):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 4.3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 5)):
                 score += weight[5]
             else:
                 score += weight[1]
@@ -253,20 +257,20 @@ class BlueNode:
         elif currvotingpercentage >= 50 and currvotingpercentage < 75:
 
             # Still blue bias, so add medium-low score
-            # High voting percentage and very certain so add low score
-            if uncertaintyavgVoting > (startingMaxUncertainty / 1.4):
+            # High voting percentage and very certain so add low score.
+            if (uncertaintyavgVoting > (startingMaxUncertainty / 1.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2)):
                 score -= weight[7]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 2):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2.4)):
                 score -= weight[6]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 2.4):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3)):
                 score -= weight[3]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 3):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3.6)):
                 score += weight[3]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 3.6):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3.6)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.3)):
                 score += weight[4]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 4.3):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 4.3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.7)):
                 score += weight[5]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 4.7):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 4.7)) and (uncertaintyavgVoting < (startingMaxUncertainty / 5.2)):
                 score += weight[6]
             else:
                 score += weight[7]
@@ -274,36 +278,37 @@ class BlueNode:
         # Red bias so make higher for blue lower for red
         elif currvotingpercentage >= 25 and currvotingpercentage < 50:
             # Low voting percentage for blue, add higher scores
-            if uncertaintyavgVoting > (startingMaxUncertainty / 1.4):
+
+            if (uncertaintyavgVoting > (startingMaxUncertainty / 1.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2)):
                 score -= weight[4]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 2):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2.4)):
                 score -= weight[3]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 2.4):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3)):
                 score -= weight[2]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 3):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3.6)):
                 score += weight[5]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 3.6):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3.6)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.3)):
                 score += weight[6]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 4.3):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 4.3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.7)):
                 score += weight[7]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 4.7):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 4.7)) and (uncertaintyavgVoting < (startingMaxUncertainty / 5.2)):
                 score += weight[8]
             else:
                 score += weight[9]
 
         elif currvotingpercentage < 25 and currvotingpercentage > 10:
             # Very low voting percentage for blue, add very high scores
-            if uncertaintyavgVoting > (startingMaxUncertainty / 1.4):
+            if (uncertaintyavgVoting > (startingMaxUncertainty / 1.4)) and (uncertaintyavgVoting < (startingMaxUncertainty / 2.4)):
                 score -= weight[3]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 2.4):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 2)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3)):
                 score -= weight[2]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 3):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 3.6)):
                 score += weight[6]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 3.6):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 3.6)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.3)):
                 score += weight[7]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 4.3):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 4.3)) and (uncertaintyavgVoting < (startingMaxUncertainty / 4.9)):
                 score += weight[8]
-            elif uncertaintyavgVoting > (startingMaxUncertainty / 4.7):
+            elif (uncertaintyavgVoting > (startingMaxUncertainty / 4.9)) and (uncertaintyavgVoting < (startingMaxUncertainty / 6)):
                 score += weight[9]
             else:
                 score += weight[10]

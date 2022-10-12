@@ -52,7 +52,7 @@ def main():
                 print("This is the blue teams turn")
                 ginstance.blueTeamTurn()
 
-        ginstance.displayNetwork()
+        # ginstance.displayNetwork()
 
     except ValueError:
         print('Error! The number entered must be an int. ')
