@@ -1,25 +1,29 @@
-import random;
-import collections;
-from greyNode import GreyNode;
-from redNode import RedNode;
+import random
+import collections
+from unittest import case
+from greyNode import GreyNode
+from redNode import RedNode
 
 
 class BlueNode:
 
     def __init__(self):
         self.energy = 100
-        self.messagesString = [("1. Vote Plox (broadcast power 1/Energy cost 5)",1),("2. Democracy good (broadcast power 1/Energy cost 5)",1),
-                               ("3. just vote pls, do it (broadcast power 2/Energy cost 10)",2),("4. I beg you (broadcast power 2)/Energy cost 10)",2),
-                               ("5. red no good (broadcast power 3)/Energy cost 15",3),("6. boo red fake news (broadcast power 3)/Energy cost 15)",3),
-                               ("7. dont belif media pls (broadcast power 4/Energy cost 20)",4),("8. i swear we're better (broadcast power 4/Energy cost 20)",4),
-                               ("9. free healthcare (broadcast power 5/Energy cost 30)",5),("10. for the ppl by the ppl (broadcast power 5/Energy cost 30)",5)]
+        self.messagesString = [("1. Vote Plox (broadcast power 1/Energy cost 5)", 1), ("2. Democracy good (broadcast power 1/Energy cost 5)", 1),
+                               ("3. just vote pls, do it (broadcast power 2/Energy cost 10)",
+                                2), ("4. I beg you (broadcast power 2)/Energy cost 10)", 2),
+                               ("5. red no good (broadcast power 3)/Energy cost 15",
+                                3), ("6. boo red fake news (broadcast power 3)/Energy cost 15)", 3),
+                               ("7. dont belif media pls (broadcast power 4/Energy cost 20)",
+                                4), ("8. i swear we're better (broadcast power 4/Energy cost 20)", 4),
+                               ("9. free healthcare (broadcast power 5/Energy cost 30)", 5), ("10. for the ppl by the ppl (broadcast power 5/Energy cost 30)", 5)]
         self.greyAgentsAvailable = 1
         self.redAi = RedNode()
 
     def setenergy(self, value):
         self.energy -= value
 
-    def broadcastMessage(self,populationGrid,broadcastOption):
+    def broadcastMessage(self, populationGrid, broadcastOption):
         broadcastOption -= 1
         option = self.messagesString[broadcastOption]
         print(option[0])
@@ -27,7 +31,7 @@ class BlueNode:
             print("broadcasted")
             self.setenergy(5)
             for gn in populationGrid:
-                influence = random.randrange(1,6)
+                influence = random.randrange(1, 6)
                 if influence < 4:
                     if(gn.voting):
                         gn.setUncertainty(-0.1)
@@ -107,16 +111,13 @@ class BlueNode:
                             x = 1 - gn.uncertainty
                             gn.uncertainty = 1 - x
 
-
-
-
-    def deployGreyAgent(self,poplist, grid):
+    def deployGreyAgent(self, poplist, grid):
         if (self.greyAgentsAvailable > 0):
             self.greyAgentsAvailable -= 1
             print("agent deployed")
-            rnum = random.randrange(1,6)
+            rnum = random.randrange(1, 6)
             ally = True
-            if(rnum  == 2):
+            if(rnum == 2):
                 ally = False
             gAgent = GreyNode(len(poplist), ally)
             poplist.append(gAgent)
@@ -124,15 +125,14 @@ class BlueNode:
         else:
             print("No more agents you used all")
 
-    def deploySimulatedGreyAgent(self,poplist):
-            print("agent deployed")
-            rnum = random.randrange(1,6)
-            ally = True
-            if(rnum  == 2):
-                ally = False
-            gAgent = GreyNode(len(poplist), ally)
-            poplist.append(gAgent)
-
+    def deploySimulatedGreyAgent(self, poplist):
+        print("agent deployed")
+        rnum = random.randrange(1, 6)
+        ally = True
+        if(rnum == 2):
+            ally = False
+        gAgent = GreyNode(len(poplist), ally)
+        poplist.append(gAgent)
 
     def blueAIagent(self, populationList, grid):
         moveScores = []
@@ -140,7 +140,7 @@ class BlueNode:
             boardcopy = populationList.copy()
             if (i < 9):
                 self.broadcastMessage(boardcopy, i)
-                score = self.minimax(boardcopy,4,False)
+                score = self.minimax(boardcopy, 4, False)
                 moveScores.append(score)
             else:
                 self.deploySimulatedGreyAgent(boardcopy)
@@ -149,33 +149,115 @@ class BlueNode:
         bestNumber = max(moveScores)
         bestMove = moveScores.index(bestNumber)
         if(bestMove < 10):
-            self.broadcastMessage(populationList,bestMove)
+            self.broadcastMessage(populationList, bestMove)
         else:
-            self.deployGreyAgent(populationList,grid)
+            self.deployGreyAgent(populationList, grid)
 
-
-
-
-    def minimax(self, populationList , depth , aiturn):
+    def minimax(self, populationList, depth, aiturn):
         if depth <= 0 or abs(self.heuristic(populationList)) > 10000:
             return self.heuristic(populationList)
 
         if(aiturn):
-            #go through each column
+            # go through each column
             currentMaxScore = -100000000
             newState = populationList.copy()
             for i in range(11):
                 if(i < 9):
-                    self.broadcastMessage(newState,i)
+                    self.broadcastMessage(newState, i)
                 else:
                     self.deploySimulatedGreyAgent(newState)
-                currentMaxScore= max(currentMaxScore,self.minimax(newState,depth-1,False))
+                currentMaxScore = max(
+                    currentMaxScore, self.minimax(newState, depth-1, False))
 
             return currentMaxScore
         else:
             currentMinScore = 1000000000
             newState = populationList.copy()
             for i in range(10):
-                self.redAi.broadcast(newState,i)
-                currentMinScore= min(currentMinScore,self.minimax(newState,depth-1,True))
-            return  currentMinScore
+                self.redAi.broadcast(newState, i)
+                currentMinScore = min(
+                    currentMinScore, self.minimax(newState, depth-1, True))
+            return currentMinScore
+
+    def blueHeuristic(self, populationlist, startingMaxUncertainty):
+        # Score to be returned
+        score = 0
+        # Associated weight to be added to the score
+        weight = {1: 0, 2: 5, 3: 10, 4: 30, 5: 80,
+                  6: 200, 7: 500, 8: 1000, 9: 20000, 10: 100000}
+        # Calculations for voting uncertainties and averages
+        votingcount = 0
+        notvotingcount = 0
+        uncertaintyavgVoting = 0
+        uncertaintyavgNotVoting = 0
+        for agent in populationlist:
+            if(agent.voting):
+                votingcount += 1
+                uncertaintyavgVoting += agent.uncertainty
+            else:
+                notvotingcount += 1
+                uncertaintyavgNotVoting += agent.uncertainty
+
+        currvotingpercentage = (votingcount/len(populationlist)) * 100
+        uncertaintyavgVoting /= votingcount
+        uncertaintyavgNotVoting /= notvotingcount
+        # Probably don't need these calculations, make sure to remove as parameters
+        # CurrUncertaintyDiff = uncertaintyavgVoting - uncertaintyavgNotVoting
+        # CurrUncertaintyDiff = abs(CurrUncertaintyDiff)
+        # ChangedUncertaintyDiff = CurrUncertaintyDiff/UncertaintyDiff
+
+        # Blue Bias so make higher for red and lower for blue
+        if currvotingpercentage >= 75:
+            # High voting percentage and very certain so add low score
+            if uncertaintyavgVoting > (startingMaxUncertainty/1.4):
+                score += weight[1]
+            if uncertaintyavgVoting > (startingMaxUncertainty/2):
+                score += weight[2]
+            if uncertaintyavgVoting > (startingMaxUncertainty/2.4):
+                score += weight[3]
+            if uncertaintyavgVoting > (startingMaxUncertainty/3):
+                score += weight[4]
+
+        elif currvotingpercentage >= 50 and currvotingpercentage < 75:
+            # Still blue bias, so add medium-low score
+            # High voting percentage and very certain so add low score
+            if uncertaintyavgVoting > (startingMaxUncertainty/1.4):
+                score += weight[3]
+            if uncertaintyavgVoting > (startingMaxUncertainty/2):
+                score += weight[4]
+            if uncertaintyavgVoting > (startingMaxUncertainty/2.4):
+                score += weight[5]
+            if uncertaintyavgVoting > (startingMaxUncertainty/3):
+                score += weight[6]
+
+        # Red bias so make higher for blue lower for red
+        elif currvotingpercentage >= 25 and currvotingpercentage < 50:
+            # Low voting percentage for blue, add higher scores
+            if uncertaintyavgVoting > (startingMaxUncertainty/1.4):
+                score += weight[4]
+            if uncertaintyavgVoting > (startingMaxUncertainty/2):
+                score += weight[5]
+            if uncertaintyavgVoting > (startingMaxUncertainty/2.4):
+                score += weight[6]
+            if uncertaintyavgVoting > (startingMaxUncertainty/3):
+                score += weight[7]
+
+        elif currvotingpercentage < 25 and currvotingpercentage > 10:
+            # Very low voting percentage for blue, add very high scores
+            if uncertaintyavgVoting > (startingMaxUncertainty/1.4):
+                score += weight[6]
+            if uncertaintyavgVoting > (startingMaxUncertainty/2):
+                score += weight[7]
+            if uncertaintyavgVoting > (startingMaxUncertainty/2.4):
+                score += weight[8]
+            if uncertaintyavgVoting > (startingMaxUncertainty/3):
+                score += weight[9]
+
+        elif currvotingpercentage <= 10:
+            # Next to zero voting percentage in favour of blue, add the highest weight to score
+            score += weight[10]
+
+            # If no grey agents left, then make score very negative
+        if self.greyAgentsAvailable == 0:
+            score += -1000000
+        return score
