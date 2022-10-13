@@ -237,98 +237,51 @@ class BlueNode:
 
         if uncertaintyavgVoting < 0:
             if ((uncertaintyavgVoting > -0.9) and (uncertaintyavgVoting <= -1)):
-                scoreBlue += weight[10]
+                score += weight[10]
             elif ((uncertaintyavgVoting > -0.8) and (uncertaintyavgVoting <= -0.9)):
-                scoreBlue += weight[9]
+                score += weight[9]
             elif ((uncertaintyavgVoting > -0.7) and (uncertaintyavgVoting <= -0.8)):
-                scoreBlue += weight[8]
+                score += weight[8]
             elif ((uncertaintyavgVoting > -0.6) and (uncertaintyavgVoting <= -0.7)):
-                scoreBlue += weight[7]
+                score += weight[7]
             elif ((uncertaintyavgVoting > -0.5) and (uncertaintyavgVoting <= -0.6)):
-                scoreBlue += weight[6]
+                score += weight[6]
             elif ((uncertaintyavgVoting > -0.4) and (uncertaintyavgVoting <= -0.5)):
-                scoreBlue += weight[5]
+                score += weight[5]
             elif ((uncertaintyavgVoting > -0.3) and (uncertaintyavgVoting <= -0.4)):
-                scoreBlue += weight[4]
+                score += weight[4]
             elif ((uncertaintyavgVoting > -0.2) and (uncertaintyavgVoting <= -0.3)):
-                scoreBlue += weight[3]
+                score += weight[3]
             elif ((uncertaintyavgVoting > -0.1) and (uncertaintyavgVoting <= -0.2)):
-                scoreBlue += weight[2]
+                score += weight[2]
             elif ((uncertaintyavgVoting >= 0) and (uncertaintyavgVoting <= -0.1)):
-                scoreBlue += weight[1]
+                score += weight[1]
         elif uncertaintyavgVoting > 0:
             if ((uncertaintyavgVoting > 0) and (uncertaintyavgVoting < 0.1)):
-                scoreBlue -= weight[1]
+                score -= weight[1]
             elif ((uncertaintyavgVoting > 0.1) and (uncertaintyavgVoting < 0.2)):
-                scoreBlue -= weight[2]
+                score -= weight[2]
             elif ((uncertaintyavgVoting > 0.2) and (uncertaintyavgVoting < 0.3)):
-                scoreBlue -= weight[3]
+                score -= weight[3]
             elif ((uncertaintyavgVoting > 0.3) and (uncertaintyavgVoting < 0.4)):
-                scoreBlue -= weight[4]
+                score -= weight[4]
             elif ((uncertaintyavgVoting > 0.4) and (uncertaintyavgVoting < 0.5)):
-                scoreBlue -= weight[5]
+                score -= weight[5]
             elif ((uncertaintyavgVoting > 0.5) and (uncertaintyavgVoting < 0.6)):
-                scoreBlue -= weight[6]
+                score -= weight[6]
             elif ((uncertaintyavgVoting > 0.6) and (uncertaintyavgVoting < 0.7)):
-                scoreBlue -= weight[7]
+                score -= weight[7]
             elif ((uncertaintyavgVoting > 0.7) and (uncertaintyavgVoting < 0.8)):
-                scoreBlue -= weight[8]
+                score -= weight[8]
             elif ((uncertaintyavgVoting > 0.8) and (uncertaintyavgVoting < 0.9)):
-                scoreBlue -= weight[9]
+                score -= weight[9]
             elif ((uncertaintyavgVoting > 0.9) and (uncertaintyavgVoting <= 1)):
-                scoreBlue -= weight[10]
+                score -= weight[10]
 
-        scoreBlue *= currvotingpercentage
-
-        # if uncertaintyavgVoting < 0:
-        #     if ((uncertaintyavgVoting > -0.9) and (uncertaintyavgVoting <= -1)):
-        #         scoreRed -= weight[10]
-        #     elif ((uncertaintyavgVoting > -0.8) and (uncertaintyavgVoting <= -0.9)):
-        #         scoreRed -= weight[9]
-        #     elif ((uncertaintyavgVoting > -0.7) and (uncertaintyavgVoting <= -0.8)):
-        #         scoreRed -= weight[8]
-        #     elif ((uncertaintyavgVoting > -0.6) and (uncertaintyavgVoting <= -0.7)):
-        #         scoreRed -= weight[7]
-        #     elif ((uncertaintyavgVoting > -0.5) and (uncertaintyavgVoting <= -0.6)):
-        #         scoreRed -= weight[6]
-        #     elif ((uncertaintyavgVoting > -0.4) and (uncertaintyavgVoting <= -0.5)):
-        #         scoreRed -= weight[5]
-        #     elif ((uncertaintyavgVoting > -0.3) and (uncertaintyavgVoting <= -0.4)):
-        #         scoreRed -= weight[4]
-        #     elif ((uncertaintyavgVoting > -0.2) and (uncertaintyavgVoting <= -0.3)):
-        #         scoreRed -= weight[3]
-        #     elif ((uncertaintyavgVoting > -0.1) and (uncertaintyavgVoting <= -0.2)):
-        #         scoreRed -= weight[2]
-        #     elif ((uncertaintyavgVoting >= 0) and (uncertaintyavgVoting <= -0.1)):
-        #         scoreRed -= weight[1]
-        # elif uncertaintyavgVoting > 0:
-        #     if ((uncertaintyavgVoting > 0) and (uncertaintyavgVoting < 0.1)):
-        #         scoreRed += weight[1]
-        #     elif ((uncertaintyavgVoting > 0.1) and (uncertaintyavgVoting < 0.2)):
-        #         scoreRed += weight[2]
-        #     elif ((uncertaintyavgVoting > 0.2) and (uncertaintyavgVoting < 0.3)):
-        #         scoreRed += weight[3]
-        #     elif ((uncertaintyavgVoting > 0.3) and (uncertaintyavgVoting < 0.4)):
-        #         scoreRed += weight[4]
-        #     elif ((uncertaintyavgVoting > 0.4) and (uncertaintyavgVoting < 0.5)):
-        #         scoreRed += weight[5]
-        #     elif ((uncertaintyavgVoting > 0.5) and (uncertaintyavgVoting < 0.6)):
-        #         scoreRed += weight[6]
-        #     elif ((uncertaintyavgVoting > 0.6) and (uncertaintyavgVoting < 0.7)):
-        #         scoreRed += weight[7]
-        #     elif ((uncertaintyavgVoting > 0.7) and (uncertaintyavgVoting < 0.8)):
-        #         scoreRed += weight[8]
-        #     elif ((uncertaintyavgVoting > 0.8) and (uncertaintyavgVoting < 0.9)):
-        #         scoreRed += weight[9]
-        #     elif ((uncertaintyavgVoting > 0.9) and (uncertaintyavgVoting <= 1)):
-        #         scoreRed += weight[10]
-
-        # scoreRed *= (100 - currvotingpercentage)
-        # score = scoreRed + scoreBlue
+        score *= currvotingpercentage
 
         print("Current voting percentage ", currvotingpercentage)
         print("UncertaintyAvgVoting ", uncertaintyavgVoting)
         print("UncertaintyAvgNotVoting ", uncertaintyavgNotVoting)
-        score += scoreBlue
         print(int(score))
         return int(score)
