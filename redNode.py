@@ -1,5 +1,6 @@
 import random
 import collections
+from blueNode import BlueNode
 
 
 class RedNode:
@@ -15,6 +16,7 @@ class RedNode:
                                ("8. i swear we're better (broadcast power 4/Energy cost 20)", 4),
                                ("9. free healthcare (broadcast power 5/Energy cost 30)", 5),
                                ("10. for the ppl by the ppl (broadcast power 5/Energy cost 30)", 5)]
+        self.blueAi = BlueNode()
 
     def broadcast(self, populationGrid, broadcastOption):
         broadcastOption -= 1
@@ -103,37 +105,48 @@ class RedNode:
                 else:
                     gn.flipVote()
 
-    def redAIagent(self):
-        return 10
+    def redAIagent(self,populationList,startingMaxUncertainty,startingMinUncertainty):
+        moveScores = []
+        for i in range(10):
+            boardcopy = populationList.copy()
+            self.broadcast(boardcopy, i+1)
+            score = self.minimax(boardcopy, 3, False)
+            moveScores.append(score)
+        bestNumber = max(moveScores)
+        bestMove = moveScores.index(bestNumber)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", moveScores)
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", bestMove)
+        self.broadcast(populationList, bestMove + 1)
 
     def minimax(self, populationList, depth, aiturn):
-        if depth <= 0 or abs(self.analyse(populationList)) > 10000:
-            return self.analyse(populationList)
+        if depth <= 0 or abs(self.redHeuristic(populationList)) > 10000:
+            return self.redHeuristic(populationList)
 
         if (aiturn):
             # go through each column
             currentMaxScore = -100000000
-            for i in range(len(populationList)):
-                newState = populationList.copy()
-                if (len(populationList[i]) < 10):
-                    currentMaxScore = max(currentMaxScore, self.minimax(
-                        newState, depth-1, False, "O"))
-                else:
-                    continue
+            newState = populationList.copy()
+            for i in range(10):
+                self.broadcast(newState, i + 1)
+                currentMaxScore = max(
+                    currentMaxScore,
+                    self.minimax(newState, depth - 1, False))
 
             return currentMaxScore
         else:
             currentMinScore = 1000000000
-            for i in range(len(populationList)):
-                newState = populationList.copy()
-                if (len(populationList[i]) < 6):
-                    currentMinScore = min(currentMinScore, self.minimax(
-                        newState, depth-1, True, "O"))
+            newState = populationList.copy()
+            for i in range(11):
+                if (i < 9):
+                    self.blueAi.broadcastMessage(newState, i + 1)
                 else:
-                    continue
+                    self.blueAi.deploySimulatedGreyAgent(newState)
+                currentMinScore = min(
+                    currentMinScore,
+                    self.minimax(newState, depth - 1, True))
             return currentMinScore
 
-    def redHeuristic(self, populationlist, startingMaxUncertainty, startingMinUncertainty):
+    def redHeuristic(self, populationlist):
         # Score to be returned
         score = 0
         scoreBlue = 0
