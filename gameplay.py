@@ -198,7 +198,7 @@ class Gameplay:
             option = int(option)
             self.redPlayer.broadcast(self.poplist, option)
         else:
-            self.redRealPlayer.redAIagent()
+            self.redPlayer.redAIagent(self.poplist)
 
     def result(self):
         print('You are all winners')
@@ -208,7 +208,11 @@ class Gameplay:
     def displayNetwork(self):
         Graph = nx.Graph()
         # Add in edges
-        Graph.add_edges_from([(self.grid[1], self.grid[2])])
+        for key in self.grid.keys():
+            iagent = random.randrange(0, len(self.poplist))
+            # print(self.poplist[key].uncertainty,self.poplist[key].id)
+            self.grid[key] = self.poplist[iagent]
+            Graph.add_edges_from([(self.poplist[key], self.grid[key])])
 
         pos = nx.spring_layout(Graph, k=0.5, iterations=100)
         for n, p in pos.items():
