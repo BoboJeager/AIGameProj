@@ -187,7 +187,8 @@ class Gameplay:
             except ValueError:
                 print('number must be an int')
         else:
-            self.bluePlayer.blueAIagent(self.poplist,self.grid,self.maxUncertainty)
+            self.bluePlayer.blueAIagent(
+                self.poplist, self.grid, self.maxUncertainty, self.minUncertainty)
 
     def redTeamTurn(self):
         if self.redRealPlayer:
