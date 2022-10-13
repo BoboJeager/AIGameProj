@@ -102,6 +102,7 @@ class RedNode:
                         if (gn.uncertainty > 1):
                             gn.flipVote()
                             x = 1 - gn.uncertainty
+                            gn.uncertainty = 1 - x
                 else:
                     gn.flipVote()
 
@@ -131,7 +132,6 @@ class RedNode:
                 currentMaxScore = max(
                     currentMaxScore,
                     self.minimax(newState, depth - 1, False))
-
             return currentMaxScore
         else:
             currentMinScore = 1000000000
@@ -167,60 +167,60 @@ class RedNode:
                 notvotingcount += 1
                 uncertaintyavgNotVoting += agent.uncertainty
 
-        currvotingpercentage = (votingcount/len(populationlist))
-        if votingcount == 0:
+        currentNotVotingPercentage = (notvotingcount/len(populationlist))
+        if notvotingcount == 0:
             score -= 10000000
         else:
-            uncertaintyavgVoting /= votingcount
-        if notvotingcount == 0:
+            uncertaintyavgNotVoting /= notvotingcount
+        if votingcount == 0:
             score += 10000000
 
         if uncertaintyavgNotVoting < 0:
-            if ((uncertaintyavgNotVoting > -0.9) and (uncertaintyavgNotVoting <= -1)):
+            if ((uncertaintyavgNotVoting < -0.9) and (uncertaintyavgNotVoting >= -1)):
                 score += weight[10]
-            elif ((uncertaintyavgNotVoting > -0.8) and (uncertaintyavgNotVoting <= -0.9)):
+            elif ((uncertaintyavgNotVoting < -0.8) and (uncertaintyavgNotVoting >= -0.9)):
                 score += weight[9]
-            elif ((uncertaintyavgNotVoting > -0.7) and (uncertaintyavgNotVoting <= -0.8)):
+            elif ((uncertaintyavgNotVoting < -0.7) and (uncertaintyavgNotVoting >= -0.8)):
                 score += weight[8]
-            elif ((uncertaintyavgNotVoting > -0.6) and (uncertaintyavgNotVoting <= -0.7)):
+            elif ((uncertaintyavgNotVoting < -0.6) and (uncertaintyavgNotVoting >= -0.7)):
                 score += weight[7]
-            elif ((uncertaintyavgNotVoting > -0.5) and (uncertaintyavgNotVoting <= -0.6)):
+            elif ((uncertaintyavgNotVoting < -0.5) and (uncertaintyavgNotVoting >= -0.6)):
                 score += weight[6]
-            elif ((uncertaintyavgNotVoting > -0.4) and (uncertaintyavgNotVoting <= -0.5)):
+            elif ((uncertaintyavgNotVoting < -0.4) and (uncertaintyavgNotVoting >= -0.5)):
                 score += weight[5]
-            elif ((uncertaintyavgNotVoting > -0.3) and (uncertaintyavgNotVoting <= -0.4)):
+            elif ((uncertaintyavgNotVoting < -0.3) and (uncertaintyavgNotVoting >= -0.4)):
                 score += weight[4]
-            elif ((uncertaintyavgNotVoting > -0.2) and (uncertaintyavgNotVoting <= -0.3)):
+            elif ((uncertaintyavgNotVoting < -0.2) and (uncertaintyavgNotVoting >= -0.3)):
                 score += weight[3]
-            elif ((uncertaintyavgNotVoting > -0.1) and (uncertaintyavgNotVoting <= -0.2)):
+            elif ((uncertaintyavgNotVoting < -0.1) and (uncertaintyavgNotVoting >= -0.2)):
                 score += weight[2]
-            elif ((uncertaintyavgNotVoting >= 0) and (uncertaintyavgNotVoting <= -0.1)):
+            elif ((uncertaintyavgNotVoting < 0) and (uncertaintyavgNotVoting >= -0.1)):
                 score += weight[1]
         elif uncertaintyavgNotVoting > 0:
-            if ((uncertaintyavgNotVoting > 0) and (uncertaintyavgNotVoting < 0.1)):
+            if ((uncertaintyavgNotVoting > 0) and (uncertaintyavgNotVoting <= 0.1)):
                 score -= weight[1]
-            elif ((uncertaintyavgNotVoting > 0.1) and (uncertaintyavgNotVoting < 0.2)):
+            elif ((uncertaintyavgNotVoting > 0.1) and (uncertaintyavgNotVoting <= 0.2)):
                 score -= weight[2]
-            elif ((uncertaintyavgNotVoting > 0.2) and (uncertaintyavgNotVoting < 0.3)):
+            elif ((uncertaintyavgNotVoting > 0.2) and (uncertaintyavgNotVoting <= 0.3)):
                 score -= weight[3]
-            elif ((uncertaintyavgNotVoting > 0.3) and (uncertaintyavgNotVoting < 0.4)):
+            elif ((uncertaintyavgNotVoting > 0.3) and (uncertaintyavgNotVoting <= 0.4)):
                 score -= weight[4]
-            elif ((uncertaintyavgNotVoting > 0.4) and (uncertaintyavgNotVoting < 0.5)):
+            elif ((uncertaintyavgNotVoting > 0.4) and (uncertaintyavgNotVoting <= 0.5)):
                 score -= weight[5]
-            elif ((uncertaintyavgNotVoting > 0.5) and (uncertaintyavgNotVoting < 0.6)):
+            elif ((uncertaintyavgNotVoting > 0.5) and (uncertaintyavgNotVoting <= 0.6)):
                 score -= weight[6]
-            elif ((uncertaintyavgNotVoting > 0.6) and (uncertaintyavgNotVoting < 0.7)):
+            elif ((uncertaintyavgNotVoting > 0.6) and (uncertaintyavgNotVoting <= 0.7)):
                 score -= weight[7]
-            elif ((uncertaintyavgNotVoting > 0.7) and (uncertaintyavgNotVoting < 0.8)):
+            elif ((uncertaintyavgNotVoting > 0.7) and (uncertaintyavgNotVoting <= 0.8)):
                 score -= weight[8]
-            elif ((uncertaintyavgNotVoting > 0.8) and (uncertaintyavgNotVoting < 0.9)):
+            elif ((uncertaintyavgNotVoting > 0.8) and (uncertaintyavgNotVoting <= 0.9)):
                 score -= weight[9]
             elif ((uncertaintyavgNotVoting > 0.9) and (uncertaintyavgNotVoting <= 1)):
                 score -= weight[10]
 
-        score *= currvotingpercentage
+        score *= currentNotVotingPercentage
 
-        print("Current voting percentage ", currvotingpercentage)
+        print("Current Not voting percentage ", currentNotVotingPercentage)
         print("UncertaintyAvgVoting ", uncertaintyavgVoting)
         print("UncertaintyAvgNotVoting ", uncertaintyavgNotVoting)
         print(int(score))

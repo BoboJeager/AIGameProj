@@ -28,27 +28,27 @@ class BlueNode:
         broadcastOption -= 1
         option = self.messagesString[broadcastOption]
         print(option[0])
-        if (option[1] == 1):
+        if(option[1] == 1):
             print("broadcasted")
             self.setenergy(5)
             for gn in populationGrid:
                 if isinstance(gn, greenNode):
                     influence = random.randrange(1, 6)
                     if influence < 4:
-                        if (gn.voting):
+                        if(gn.voting):
                             gn.setUncertainty(-0.1)
-                            if (gn.uncertainty < -1):
+                            if(gn.uncertainty < -1):
                                 gn.uncertainty = -1
                         else:
                             gn.setUncertainty(0.1)
-                            if (gn.uncertainty > 1):
+                            if(gn.uncertainty > 1):
                                 gn.flipVote()
                                 x = 1 - gn.uncertainty
                                 gn.uncertainty = 1 - x
                 else:
                     continue
 
-        elif (option[1] == 2):
+        elif(option[1] == 2):
             print("broadcasted")
             self.setenergy(10)
             print("broadcasted")
@@ -258,23 +258,23 @@ class BlueNode:
             elif ((uncertaintyavgVoting >= 0) and (uncertaintyavgVoting <= -0.1)):
                 score += weight[1]
         elif uncertaintyavgVoting > 0:
-            if ((uncertaintyavgVoting > 0) and (uncertaintyavgVoting < 0.1)):
+            if ((uncertaintyavgVoting > 0) and (uncertaintyavgVoting <= 0.1)):
                 score -= weight[1]
-            elif ((uncertaintyavgVoting > 0.1) and (uncertaintyavgVoting < 0.2)):
+            elif ((uncertaintyavgVoting > 0.1) and (uncertaintyavgVoting <= 0.2)):
                 score -= weight[2]
-            elif ((uncertaintyavgVoting > 0.2) and (uncertaintyavgVoting < 0.3)):
+            elif ((uncertaintyavgVoting > 0.2) and (uncertaintyavgVoting <= 0.3)):
                 score -= weight[3]
-            elif ((uncertaintyavgVoting > 0.3) and (uncertaintyavgVoting < 0.4)):
+            elif ((uncertaintyavgVoting > 0.3) and (uncertaintyavgVoting <= 0.4)):
                 score -= weight[4]
-            elif ((uncertaintyavgVoting > 0.4) and (uncertaintyavgVoting < 0.5)):
+            elif ((uncertaintyavgVoting > 0.4) and (uncertaintyavgVoting <= 0.5)):
                 score -= weight[5]
-            elif ((uncertaintyavgVoting > 0.5) and (uncertaintyavgVoting < 0.6)):
+            elif ((uncertaintyavgVoting > 0.5) and (uncertaintyavgVoting <= 0.6)):
                 score -= weight[6]
-            elif ((uncertaintyavgVoting > 0.6) and (uncertaintyavgVoting < 0.7)):
+            elif ((uncertaintyavgVoting > 0.6) and (uncertaintyavgVoting <= 0.7)):
                 score -= weight[7]
-            elif ((uncertaintyavgVoting > 0.7) and (uncertaintyavgVoting < 0.8)):
+            elif ((uncertaintyavgVoting > 0.7) and (uncertaintyavgVoting <= 0.8)):
                 score -= weight[8]
-            elif ((uncertaintyavgVoting > 0.8) and (uncertaintyavgVoting < 0.9)):
+            elif ((uncertaintyavgVoting > 0.8) and (uncertaintyavgVoting <= 0.9)):
                 score -= weight[9]
             elif ((uncertaintyavgVoting > 0.9) and (uncertaintyavgVoting <= 1)):
                 score -= weight[10]
