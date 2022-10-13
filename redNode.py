@@ -105,7 +105,7 @@ class RedNode:
                 else:
                     gn.flipVote()
 
-    def redAIagent(self,populationList,startingMaxUncertainty,startingMinUncertainty):
+    def redAIagent(self, populationList):
         moveScores = []
         for i in range(10):
             boardcopy = populationList.copy()
