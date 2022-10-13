@@ -1,5 +1,6 @@
-import random;
-import collections;
+import random
+import collections
+
 
 class RedNode:
 
@@ -14,7 +15,8 @@ class RedNode:
                                ("8. i swear we're better (broadcast power 4/Energy cost 20)", 4),
                                ("9. free healthcare (broadcast power 5/Energy cost 30)", 5),
                                ("10. for the ppl by the ppl (broadcast power 5/Energy cost 30)", 5)]
-    def broadcast(self,populationGrid,broadcastOption):
+
+    def broadcast(self, populationGrid, broadcastOption):
         broadcastOption -= 1
         option = self.messagesString[broadcastOption]
         print(option[0])
@@ -24,7 +26,7 @@ class RedNode:
                 influence = random.randrange(1, 6)
                 if influence < 4:
                     if (not gn.voting):
-                        if(not gn.uncertainty == -1):
+                        if (not gn.uncertainty == -1):
                             gn.setUncertainty(-0.2)
                             if (gn.uncertainty < -1):
                                 gn.uncertainty = -1
@@ -102,19 +104,20 @@ class RedNode:
                     gn.flipVote()
 
     def redAIagent(self):
-        return 10;
+        return 10
 
-    def minimax(self, populationList , depth , aiturn):
+    def minimax(self, populationList, depth, aiturn):
         if depth <= 0 or abs(self.analyse(populationList)) > 10000:
             return self.analyse(populationList)
 
-        if(aiturn):
-            #go through each column
+        if (aiturn):
+            # go through each column
             currentMaxScore = -100000000
             for i in range(len(populationList)):
                 newState = populationList.copy()
-                if(len(populationList[i]) < 10):
-                    currentMaxScore= max(currentMaxScore,self.minimax(newState,depth-1,False,"O"))
+                if (len(populationList[i]) < 10):
+                    currentMaxScore = max(currentMaxScore, self.minimax(
+                        newState, depth-1, False, "O"))
                 else:
                     continue
 
@@ -124,7 +127,88 @@ class RedNode:
             for i in range(len(populationList)):
                 newState = populationList.copy()
                 if (len(populationList[i]) < 6):
-                    currentMinScore= min(currentMinScore,self.minimax(newState,depth-1,True,"O"))
+                    currentMinScore = min(currentMinScore, self.minimax(
+                        newState, depth-1, True, "O"))
                 else:
                     continue
-            return  currentMinScore
+            return currentMinScore
+
+    def redHeuristic(self, populationlist, startingMaxUncertainty, startingMinUncertainty):
+        # Score to be returned
+        score = 0
+        scoreBlue = 0
+        scoreRed = 0
+        # Associated weight to be added to the score
+        weight = {1: 1, 2: 5, 3: 10, 4: 30, 5: 80,
+                  6: 200, 7: 500, 8: 1000, 9: 20000, 10: 100000}
+        # Calculations for voting uncertainties and averages
+        votingcount = 0
+        notvotingcount = 0
+        uncertaintyavgVoting = 0
+        uncertaintyavgNotVoting = 0
+        for agent in populationlist:
+            if (agent.voting):
+                votingcount += 1
+                uncertaintyavgVoting += agent.uncertainty
+            else:
+                notvotingcount += 1
+                uncertaintyavgNotVoting += agent.uncertainty
+
+        currvotingpercentage = (votingcount/len(populationlist))
+        if votingcount == 0:
+            score -= 10000000
+        else:
+            uncertaintyavgVoting /= votingcount
+        if notvotingcount == 0:
+            score += 10000000
+
+        if uncertaintyavgNotVoting < 0:
+            if ((uncertaintyavgNotVoting > -0.9) and (uncertaintyavgNotVoting <= -1)):
+                score += weight[10]
+            elif ((uncertaintyavgNotVoting > -0.8) and (uncertaintyavgNotVoting <= -0.9)):
+                score += weight[9]
+            elif ((uncertaintyavgNotVoting > -0.7) and (uncertaintyavgNotVoting <= -0.8)):
+                score += weight[8]
+            elif ((uncertaintyavgNotVoting > -0.6) and (uncertaintyavgNotVoting <= -0.7)):
+                score += weight[7]
+            elif ((uncertaintyavgNotVoting > -0.5) and (uncertaintyavgNotVoting <= -0.6)):
+                score += weight[6]
+            elif ((uncertaintyavgNotVoting > -0.4) and (uncertaintyavgNotVoting <= -0.5)):
+                score += weight[5]
+            elif ((uncertaintyavgNotVoting > -0.3) and (uncertaintyavgNotVoting <= -0.4)):
+                score += weight[4]
+            elif ((uncertaintyavgNotVoting > -0.2) and (uncertaintyavgNotVoting <= -0.3)):
+                score += weight[3]
+            elif ((uncertaintyavgNotVoting > -0.1) and (uncertaintyavgNotVoting <= -0.2)):
+                score += weight[2]
+            elif ((uncertaintyavgNotVoting >= 0) and (uncertaintyavgNotVoting <= -0.1)):
+                score += weight[1]
+        elif uncertaintyavgNotVoting > 0:
+            if ((uncertaintyavgNotVoting > 0) and (uncertaintyavgNotVoting < 0.1)):
+                score -= weight[1]
+            elif ((uncertaintyavgNotVoting > 0.1) and (uncertaintyavgNotVoting < 0.2)):
+                score -= weight[2]
+            elif ((uncertaintyavgNotVoting > 0.2) and (uncertaintyavgNotVoting < 0.3)):
+                score -= weight[3]
+            elif ((uncertaintyavgNotVoting > 0.3) and (uncertaintyavgNotVoting < 0.4)):
+                score -= weight[4]
+            elif ((uncertaintyavgNotVoting > 0.4) and (uncertaintyavgNotVoting < 0.5)):
+                score -= weight[5]
+            elif ((uncertaintyavgNotVoting > 0.5) and (uncertaintyavgNotVoting < 0.6)):
+                score -= weight[6]
+            elif ((uncertaintyavgNotVoting > 0.6) and (uncertaintyavgNotVoting < 0.7)):
+                score -= weight[7]
+            elif ((uncertaintyavgNotVoting > 0.7) and (uncertaintyavgNotVoting < 0.8)):
+                score -= weight[8]
+            elif ((uncertaintyavgNotVoting > 0.8) and (uncertaintyavgNotVoting < 0.9)):
+                score -= weight[9]
+            elif ((uncertaintyavgNotVoting > 0.9) and (uncertaintyavgNotVoting <= 1)):
+                score -= weight[10]
+
+        score *= currvotingpercentage
+
+        print("Current voting percentage ", currvotingpercentage)
+        print("UncertaintyAvgVoting ", uncertaintyavgVoting)
+        print("UncertaintyAvgNotVoting ", uncertaintyavgNotVoting)
+        print(int(score))
+        return int(score)
