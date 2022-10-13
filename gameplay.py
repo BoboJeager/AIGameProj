@@ -133,7 +133,7 @@ class Gameplay:
         uncertaintyavgVoting = 0
         uncertaintyavgNotVoting = 0
         for agent in self.poplist:
-            if(agent.voting):
+            if (agent.voting):
                 votingcount += 1
                 uncertaintyavgVoting += agent.uncertainty
             else:
@@ -155,7 +155,7 @@ class Gameplay:
         return return_list
 
     def blueTeamTurn(self):
-        if(self.blueRealPlayer):
+        if (self.blueRealPlayer):
             print("current energy = ", self.bluePlayer.energy)
             print("Grey Agents at your disposal = ",
                   self.bluePlayer.greyAgentsAvailable)
@@ -164,7 +164,7 @@ class Gameplay:
             choice = input()
             try:
                 choice = int(choice)
-                if(choice == 1):
+                if (choice == 1):
                     for t in self.bluePlayer.messagesString:
                         print(t[0])
                     option = input("\nwhich message to broadcast?\n")
@@ -172,7 +172,7 @@ class Gameplay:
                     self.bluePlayer.broadcastMessage(self.poplist, option)
                     print(self.bluePlayer.energy)
                 else:
-                    if(self.bluePlayer.greyAgentsAvailable > 0):
+                    if (self.bluePlayer.greyAgentsAvailable > 0):
                         self.bluePlayer.deployGreyAgent(
                             self.poplist, self.grid)
                     else:
@@ -188,7 +188,7 @@ class Gameplay:
                 print('number must be an int')
         else:
             self.bluePlayer.blueAIagent(
-                self.poplist, self.grid, self.maxUncertainty, self.minUncertainty)
+                self.poplist, self.grid)
 
     def redTeamTurn(self):
         if self.redRealPlayer:

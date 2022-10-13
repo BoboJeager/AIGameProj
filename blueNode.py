@@ -151,20 +151,23 @@ class BlueNode:
         gAgent = GreyNode(len(poplist), ally)
         poplist.append(gAgent)
 
-    def blueAIagent(self, populationList, grid, startingMaxUncertainty, startingMinUncertainty):
+    def blueAIagent(self, populationList, grid):
         moveScores = []
+        blueEnergy = {0: 5, 1: 5, 2: 10, 3: 10,
+                      4: 15, 5: 15, 6: 20, 7: 20, 8: 30, 9: 30}
         for i in range(10):
             boardcopy = populationList.copy()
             if (i < 9):
-                self.broadcastMessage(boardcopy, i)
-                score = self.minimax(boardcopy, 3, False,
-                                     startingMaxUncertainty, startingMinUncertainty)
-                moveScores.append(score)
+                if self.energy > blueEnergy[i]:
+                    self.broadcastMessage(boardcopy, i)
+                    score = self.minimax(boardcopy, 3, False)
+                    moveScores.append(score)
+                else:
+                    moveScores.append(-10000000000000)
             else:
                 if self.greyAgentsAvailable > 0:
                     self.deploySimulatedGreyAgent(boardcopy)
-                    score = self.minimax(boardcopy, 3, False,
-                                         startingMaxUncertainty, startingMinUncertainty)
+                    score = self.minimax(boardcopy, 3, False)
                     moveScores.append(score)
                 else:
                     moveScores.append(-10000000000000)
@@ -177,9 +180,9 @@ class BlueNode:
         else:
             self.deployGreyAgent(populationList, grid)
 
-    def minimax(self, populationList, depth, aiturn, startingUncertainty, startingMinUncertainty):
-        if depth <= 0 or abs(self.blueHeuristic(populationList, startingUncertainty, startingMinUncertainty)) > 10000:
-            return self.blueHeuristic(populationList, startingUncertainty, startingMinUncertainty)
+    def minimax(self, populationList, depth, aiturn):
+        if depth <= 0 or abs(self.blueHeuristic(populationList)) > 10000:
+            return self.blueHeuristic(populationList)
 
         if (aiturn):
             # go through each column
@@ -192,7 +195,7 @@ class BlueNode:
                     self.deploySimulatedGreyAgent(newState)
 
                 currentMaxScore = max(
-                    currentMaxScore, self.minimax(newState, depth-1, False, startingUncertainty, startingMinUncertainty))
+                    currentMaxScore, self.minimax(newState, depth-1, False))
 
             return currentMaxScore
         else:
@@ -201,16 +204,14 @@ class BlueNode:
             for i in range(10):
                 self.redAi.broadcast(newState, i)
                 currentMinScore = min(
-                    currentMinScore, self.minimax(newState, depth-1, True, startingUncertainty, startingMinUncertainty))
+                    currentMinScore, self.minimax(newState, depth-1, True))
             return currentMinScore
 
     # Iteration number 4 now
 
-    def blueHeuristic(self, populationlist, startingMaxUncertainty, startingMinUncertainty):
+    def blueHeuristic(self, populationlist):
         # Score to be returned
         score = 0
-        scoreBlue = 0
-        scoreRed = 0
         # Associated weight to be added to the score
         weight = {1: 1, 2: 5, 3: 10, 4: 30, 5: 80,
                   6: 200, 7: 500, 8: 1000, 9: 20000, 10: 100000}
