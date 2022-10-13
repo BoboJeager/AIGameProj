@@ -156,7 +156,7 @@ class BlueNode:
         for i in range(11):
             boardcopy = populationList.copy()
             if (i < 9):
-                self.broadcastMessage(boardcopy, i)
+                self.broadcastMessage(boardcopy, i + 1)
                 score = self.minimax(boardcopy, 3, False,startingMaxUncertainty)
                 moveScores.append(score)
             else:
@@ -168,7 +168,7 @@ class BlueNode:
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",moveScores)
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!",bestMove)
         if(bestMove < 10):
-            self.broadcastMessage(populationList, bestMove)
+            self.broadcastMessage(populationList, bestMove + 1)
         else:
             self.deployGreyAgent(populationList, grid)
 
@@ -182,7 +182,7 @@ class BlueNode:
             newState = populationList.copy()
             for i in range(11):
                 if(i < 9):
-                    self.broadcastMessage(newState, i)
+                    self.broadcastMessage(newState, i + 1)
                 else:
                     self.deploySimulatedGreyAgent(newState)
                 currentMaxScore = max(
@@ -193,7 +193,7 @@ class BlueNode:
             currentMinScore = 1000000000
             newState = populationList.copy()
             for i in range(10):
-                self.redAi.broadcast(newState, i)
+                self.redAi.broadcast(newState, i + 1)
                 currentMinScore = min(
                     currentMinScore, self.minimax(newState, depth-1, True,startingUncertainty))
             return currentMinScore

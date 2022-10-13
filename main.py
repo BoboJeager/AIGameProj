@@ -35,8 +35,6 @@ def main():
         ginstance.setup()
         # ginstance.displayNetwork()
 
-        for gn in ginstance.poplist:
-            print(gn.uncertainty)
         while GameRunning:
             # ginstance.currentBias()
             # ginstance.heuristic()
