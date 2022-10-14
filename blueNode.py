@@ -2,7 +2,7 @@ import random
 import collections
 from unittest import case
 from greyNode import GreyNode
-# from redNode import RedNode
+from redNode import RedNode
 from greenNode import greenNode
 
 
@@ -19,7 +19,7 @@ class BlueNode:
                                 4), ("8. i swear we're better (broadcast power 4/Energy cost 20)", 4),
                                ("9. free healthcare (broadcast power 5/Energy cost 30)", 5), ("10. for the ppl by the ppl (broadcast power 5/Energy cost 30)", 5)]
         self.greyAgentsAvailable = 0
-        # self.redAi = RedNode()
+        self.redAi = RedNode()
 
     def setenergy(self, value):
         self.energy -= value
