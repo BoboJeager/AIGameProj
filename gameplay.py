@@ -3,6 +3,7 @@ import numpy as np
 from greenNode import greenNode
 from blueNode import BlueNode
 from redNode import RedNode
+from Ai import ai
 from greyNode import GreyNode
 import matplotlib.pyplot as plt
 import matplotlib as mpl
@@ -23,6 +24,7 @@ class Gameplay:
         self.redPlayer = RedNode()
         self.blueRealPlayer = blueRealPlayer
         self.redRealPlayer = redRealPlayer
+        self.aiplayers = ai()
 
     def setup(self):
         # Press Ctrl+F8 to toggle the breakpoint.
@@ -187,7 +189,7 @@ class Gameplay:
             except ValueError:
                 print('number must be an int')
         else:
-            self.bluePlayer.blueAIagent(
+            self.aiplayers.blueAIagent(
                 self.poplist, self.grid)
 
     def redTeamTurn(self):
@@ -198,7 +200,7 @@ class Gameplay:
             option = int(option)
             self.redPlayer.broadcast(self.poplist, option)
         else:
-            self.redPlayer.redAIagent(self.poplist)
+            self.aiplayers.redAIagent(self.poplist)
 
     def result(self):
         print('You are all winners')
