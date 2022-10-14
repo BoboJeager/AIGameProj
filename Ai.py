@@ -258,8 +258,8 @@ class ai:
 
         score *= currentNotVotingPercentage
 
-        print("Current Not voting percentage ", currentNotVotingPercentage)
-        print("UncertaintyAvgVoting ", uncertaintyavgVoting)
-        print("UncertaintyAvgNotVoting ", uncertaintyavgNotVoting)
-        print(int(score))
+        # print("Current Not voting percentage ", currentNotVotingPercentage)
+        # print("UncertaintyAvgVoting ", uncertaintyavgVoting)
+        # print("UncertaintyAvgNotVoting ", uncertaintyavgNotVoting)
+        # print(int(score))
         return int(score)
