@@ -2,7 +2,7 @@ import random
 import collections
 from unittest import case
 from greyNode import GreyNode
-# from redNode import RedNode
+from redNode import RedNode
 from greenNode import greenNode
 
 
@@ -19,7 +19,7 @@ class BlueNode:
                                 4), ("8. i swear we're better (broadcast power 4/Energy cost 20)", 4),
                                ("9. free healthcare (broadcast power 5/Energy cost 30)", 5), ("10. for the ppl by the ppl (broadcast power 5/Energy cost 30)", 5)]
         self.greyAgentsAvailable = 0
-        # self.redAi = RedNode()
+        self.redAi = RedNode()
 
     def setenergy(self, value):
         self.energy -= value
@@ -237,25 +237,25 @@ class BlueNode:
             score += 10000000
 
         if uncertaintyavgVoting < 0:
-            if ((uncertaintyavgVoting > -0.9) and (uncertaintyavgVoting <= -1)):
+            if ((uncertaintyavgVoting < -0.9) and (uncertaintyavgVoting >= -1)):
                 score += weight[10]
-            elif ((uncertaintyavgVoting > -0.8) and (uncertaintyavgVoting <= -0.9)):
+            elif ((uncertaintyavgVoting < -0.8) and (uncertaintyavgVoting >= -0.9)):
                 score += weight[9]
-            elif ((uncertaintyavgVoting > -0.7) and (uncertaintyavgVoting <= -0.8)):
+            elif ((uncertaintyavgVoting < -0.7) and (uncertaintyavgVoting >= -0.8)):
                 score += weight[8]
-            elif ((uncertaintyavgVoting > -0.6) and (uncertaintyavgVoting <= -0.7)):
+            elif ((uncertaintyavgVoting < -0.6) and (uncertaintyavgVoting >= -0.7)):
                 score += weight[7]
-            elif ((uncertaintyavgVoting > -0.5) and (uncertaintyavgVoting <= -0.6)):
+            elif ((uncertaintyavgVoting < -0.5) and (uncertaintyavgVoting >= -0.6)):
                 score += weight[6]
-            elif ((uncertaintyavgVoting > -0.4) and (uncertaintyavgVoting <= -0.5)):
+            elif ((uncertaintyavgVoting < -0.4) and (uncertaintyavgVoting >= -0.5)):
                 score += weight[5]
-            elif ((uncertaintyavgVoting > -0.3) and (uncertaintyavgVoting <= -0.4)):
+            elif ((uncertaintyavgVoting < -0.3) and (uncertaintyavgVoting >= -0.4)):
                 score += weight[4]
-            elif ((uncertaintyavgVoting > -0.2) and (uncertaintyavgVoting <= -0.3)):
+            elif ((uncertaintyavgVoting < -0.2) and (uncertaintyavgVoting >= -0.3)):
                 score += weight[3]
-            elif ((uncertaintyavgVoting > -0.1) and (uncertaintyavgVoting <= -0.2)):
+            elif ((uncertaintyavgVoting < -0.1) and (uncertaintyavgVoting >= -0.2)):
                 score += weight[2]
-            elif ((uncertaintyavgVoting >= 0) and (uncertaintyavgVoting <= -0.1)):
+            elif ((uncertaintyavgVoting <= 0) and (uncertaintyavgVoting >= -0.1)):
                 score += weight[1]
         elif uncertaintyavgVoting > 0:
             if ((uncertaintyavgVoting > 0) and (uncertaintyavgVoting <= 0.1)):
