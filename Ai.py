@@ -15,8 +15,8 @@ class ai:
         for i in range(10):
             boardcopy = populationList.copy()
             if (i < 9):
-                if self.blueAI.energy > blueEnergy[i]:
-                    self.blueAI.simulatebroadcastMessage(boardcopy, i)
+                if self.blueAI.energy >= blueEnergy[i]:
+                    self.blueAI.simulatebroadcastMessage(boardcopy, i + 1)
                     score = self.blueminimax(boardcopy, 3, False)
                     moveScores.append(score)
                 else:
@@ -33,7 +33,7 @@ class ai:
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", moveScores)
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", bestMove)
         if (bestMove < 10):
-            self.blueAI.broadcastMessage(populationList, bestMove)
+            self.blueAI.broadcastMessage(populationList, bestMove + 1)
             # self.blueAI.setenergy(blueEnergy[bestMove])
         else:
             self.blueAI.deployGreyAgent(populationList, grid)
@@ -48,7 +48,7 @@ class ai:
             newState = populationList.copy()
             for i in range(11):
                 if (i < 9):
-                    self.blueAI.simulatebroadcastMessage(newState, i)
+                    self.blueAI.simulatebroadcastMessage(newState, i + 1)
                 else:
                     self.blueAI.deploySimulatedGreyAgent(newState)
 
@@ -60,7 +60,7 @@ class ai:
             currentMinScore = 1000000000
             newState = populationList.copy()
             for i in range(10):
-                self.redAI.simulatedbroadcast(newState, i)
+                self.redAI.simulatedbroadcast(newState, i + 1)
                 currentMinScore = min(
                     currentMinScore, self.blueminimax(newState, depth-1, True))
             return currentMinScore

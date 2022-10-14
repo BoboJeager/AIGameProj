@@ -24,7 +24,6 @@ class greenNode:
     def interact(self, neighbour):
         if(self.id != neighbour.id):
             print(self.id, ' is interacting with ', neighbour.id)
-            time.sleep(2.0)
             influenceUncertainty = float("{:.1f}".format(random.uniform(0.1, 0.4)))
             influenced = random.randrange(1,3)
             if (influenced == 1):
@@ -52,7 +51,6 @@ class greenNode:
                  print('no one is convinced\n')
         else:
             print(self.id, 'is talking to themselves what a loser\n')
-            time.sleep(1.0)
 
 
 
