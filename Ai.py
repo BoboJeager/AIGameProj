@@ -2,6 +2,7 @@ import random
 from redNode import RedNode
 from blueNode import BlueNode
 
+
 class ai:
     def __init__(self):
         self.redAI = RedNode()
@@ -33,6 +34,7 @@ class ai:
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", bestMove)
         if (bestMove < 10):
             self.blueAI.broadcastMessage(populationList, bestMove)
+            # self.blueAI.setenergy(blueEnergy[bestMove])
         else:
             self.blueAI.deployGreyAgent(populationList, grid)
 
@@ -143,7 +145,8 @@ class ai:
         # print("UncertaintyAvgNotVoting ", uncertaintyavgNotVoting)
         # print(int(score))
         return int(score)
-    #red AI functions
+    # red AI functions
+
     def redAIagent(self, populationList):
         moveScores = []
         for i in range(10):

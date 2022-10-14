@@ -48,7 +48,7 @@ class BlueNode:
 
         elif(option[1] == 2):
             print("broadcasted")
-            self.setenergy(5)
+            self.setenergy(10)
             for gn in populationGrid:
                 if isinstance(gn, greenNode):
                     influence = random.randrange(1, 6)

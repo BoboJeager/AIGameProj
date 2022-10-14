@@ -1,4 +1,5 @@
 from gameplay import Gameplay
+from blueNode import BlueNode
 
 
 def main():
@@ -24,7 +25,6 @@ def main():
     # Starting uncertainties seems very high (all close to/if not at 1) - nvm I think this just break when min - uncertainty is -1
 
     print("WARNING: This is currently an endless while-loop for testing.")
-    GameRunning = True
 
     try:
         startingMaxUncertainty = float(startingMaxUncertainty)
@@ -34,25 +34,26 @@ def main():
                              startingMinUncertainty, playerPlayingBlue, playerPlayingRed)
         ginstance.setup()
         # ginstance.displayNetwork()
-
+        GameRunning = True
         while GameRunning:
             # ginstance.currentBias()
             # ginstance.heuristic()
             # If red team has no followers, end game - needs red team follower functionality first
             # print("This is the red team's turn")
-
+            print("This red teams turn!")
             ginstance.redTeamTurn()
-            ginstance.blueTeamTurn()
 
-            if ginstance.bluePlayer.energy <= 0:
+            if ginstance.bluePlayer.energy <= 0 or ginstance.aiplayers.blueAI.energy <= 0:
                 GameRunning = False
                 print(
                     "The game has ended! Please see the network displayed for the final results of the game!")
             else:
                 print("This is the blue teams turn")
                 ginstance.blueTeamTurn()
+                print("Blue energy remaining: ",
+                      ginstance.aiplayers.blueAI.energy)
 
-        # ginstance.displayNetwork()
+        ginstance.displayNetwork()
 
     except ValueError:
         print('Error! The number entered must be an int. ')
