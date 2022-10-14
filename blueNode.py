@@ -141,7 +141,6 @@ class BlueNode:
             print("No more agents you used all")
 
     def deploySimulatedGreyAgent(self, poplist):
-        print("agent deployed")
         rnum = random.randrange(1, 6)
         ally = True
         if (rnum == 2):

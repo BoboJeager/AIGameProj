@@ -83,7 +83,8 @@ class ai:
             else:
                 notvotingcount += 1
                 uncertaintyavgNotVoting += agent.uncertainty
-
+        # print("voting count = ",votingcount)
+        # print("uncertaintyavgVoting = ",uncertaintyavgVoting)
         currvotingpercentage = (votingcount/len(populationlist))
         if votingcount == 0:
             score -= 10000000
@@ -137,10 +138,10 @@ class ai:
 
         score *= currvotingpercentage
 
-        print("Current voting percentage ", currvotingpercentage)
-        print("UncertaintyAvgVoting ", uncertaintyavgVoting)
-        print("UncertaintyAvgNotVoting ", uncertaintyavgNotVoting)
-        print(int(score))
+        # print("Current voting percentage ", currvotingpercentage)
+        # print("UncertaintyAvgVoting ", uncertaintyavgVoting)
+        # print("UncertaintyAvgNotVoting ", uncertaintyavgNotVoting)
+        # print(int(score))
         return int(score)
     #red AI functions
     def redAIagent(self, populationList):
