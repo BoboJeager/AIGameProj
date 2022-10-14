@@ -1,5 +1,4 @@
 from gameplay import Gameplay
-from blueNode import BlueNode
 
 
 def main():
@@ -45,13 +44,13 @@ def main():
             ginstance.redTeamTurn()
             ginstance.blueTeamTurn()
 
-            # if ginstance.bluePlayer.energy <= 0:
-            #     GameRunning = False
-            #     print(
-            #         "The game has ended! Please see the network displayed for the final results of the game!")
-            # else:
-            #     print("This is the blue teams turn")
-            #     ginstance.blueTeamTurn()
+            if ginstance.bluePlayer.energy <= 0:
+                GameRunning = False
+                print(
+                    "The game has ended! Please see the network displayed for the final results of the game!")
+            else:
+                print("This is the blue teams turn")
+                ginstance.blueTeamTurn()
 
         # ginstance.displayNetwork()
 

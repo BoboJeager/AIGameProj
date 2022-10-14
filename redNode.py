@@ -1,6 +1,5 @@
 import random
 import collections
-from blueNode import BlueNode
 
 
 class RedNode:
@@ -16,8 +15,8 @@ class RedNode:
                                ("8. i swear we're better (broadcast power 4/Energy cost 20)", 4),
                                ("9. free healthcare (broadcast power 5/Energy cost 30)", 5),
                                ("10. for the ppl by the ppl (broadcast power 5/Energy cost 30)", 5)]
-        self.blueAi = BlueNode()
-    #For player
+
+    # For player
     def broadcast(self, populationGrid, broadcastOption):
         broadcastOption -= 1
         option = self.messagesString[broadcastOption]
@@ -106,7 +105,7 @@ class RedNode:
                 else:
                     gn.flipVote()
 
-    #Used For Ai
+    # Used For Ai
     def simulatedbroadcast(self, populationGrid, broadcastOption):
         broadcastOption -= 1
         option = self.messagesString[broadcastOption]
