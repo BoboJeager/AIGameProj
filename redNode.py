@@ -28,11 +28,11 @@ class RedNode:
                 if influence < 4:
                     if (not gn.voting):
                         if (not gn.uncertainty == -1):
-                            gn.setUncertainty(-0.2)
+                            gn.setUncertainty(-0.3)
                             if (gn.uncertainty < -1):
                                 gn.uncertainty = -1
                     else:
-                        gn.setUncertainty(0.2)
+                        gn.setUncertainty(0.3)
                         if (gn.uncertainty > 1):
                             gn.flipVote()
                             x = 1 - gn.uncertainty
@@ -45,11 +45,11 @@ class RedNode:
                 if influence < 4:
                     if (not gn.voting):
                         if (not gn.uncertainty == -1):
-                            gn.setUncertainty(-0.3)
+                            gn.setUncertainty(-0.4)
                             if (gn.uncertainty < -1):
                                 gn.uncertainty = -1
                     else:
-                        gn.setUncertainty(0.3)
+                        gn.setUncertainty(0.4)
                         if (gn.uncertainty > 1):
                             gn.flipVote()
                             x = 1 - gn.uncertainty
@@ -77,11 +77,11 @@ class RedNode:
                 if influence < 4:
                     if (not gn.voting):
                         if (not gn.uncertainty == -1):
-                            gn.setUncertainty(-0.6)
+                            gn.setUncertainty(-0.7)
                             if (gn.uncertainty < -1):
                                 gn.uncertainty = -1
                     else:
-                        gn.setUncertainty(0.6)
+                        gn.setUncertainty(0.7)
                         if (gn.uncertainty > 1):
                             gn.flipVote()
                             x = 1 - gn.uncertainty
@@ -115,11 +115,11 @@ class RedNode:
                 if influence < 4:
                     if (not gn.voting):
                         if (not gn.uncertainty == -1):
-                            gn.setUncertainty(-0.2)
+                            gn.setUncertainty(-0.3)
                             if (gn.uncertainty < -1):
                                 gn.uncertainty = -1
                     else:
-                        gn.setUncertainty(0.2)
+                        gn.setUncertainty(0.3)
                         if (gn.uncertainty > 1):
                             gn.flipVote()
                             x = 1 - gn.uncertainty
@@ -131,11 +131,11 @@ class RedNode:
                 if influence < 4:
                     if (not gn.voting):
                         if (not gn.uncertainty == -1):
-                            gn.setUncertainty(-0.3)
+                            gn.setUncertainty(-0.4)
                             if (gn.uncertainty < -1):
                                 gn.uncertainty = -1
                     else:
-                        gn.setUncertainty(0.3)
+                        gn.setUncertainty(0.4)
                         if (gn.uncertainty > 1):
                             gn.flipVote()
                             x = 1 - gn.uncertainty
@@ -161,11 +161,11 @@ class RedNode:
                 if influence < 4:
                     if (not gn.voting):
                         if (not gn.uncertainty == -1):
-                            gn.setUncertainty(-0.6)
+                            gn.setUncertainty(-0.7)
                             if (gn.uncertainty < -1):
                                 gn.uncertainty = -1
                     else:
-                        gn.setUncertainty(0.6)
+                        gn.setUncertainty(0.7)
                         if (gn.uncertainty > 1):
                             gn.flipVote()
                             x = 1 - gn.uncertainty
