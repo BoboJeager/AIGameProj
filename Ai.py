@@ -190,8 +190,6 @@ class ai:
     def redHeuristic(self, populationlist):
         # Score to be returned
         score = 0
-        scoreBlue = 0
-        scoreRed = 0
         # Associated weight to be added to the score
         weight = {1: 1, 2: 5, 3: 10, 4: 30, 5: 80,
                   6: 200, 7: 500, 8: 1000, 9: 20000, 10: 100000}
@@ -266,3 +264,11 @@ class ai:
         # print("UncertaintyAvgNotVoting ", uncertaintyavgNotVoting)
         # print(int(score))
         return int(score)
+
+    def votingPercentage(self, populationlist):
+        votingcount = 0
+        for agent in populationlist:
+            if (agent.voting):
+                votingcount += 1
+        currvotingpercentage = (votingcount/len(populationlist))
+        return currvotingpercentage

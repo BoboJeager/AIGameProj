@@ -205,71 +205,40 @@ class Gameplay:
     def result(self):
         print('You are all winners')
 
-    # Function to display the network in its current state, will open a new window each time it is called
-
+   # Displays network with colors representing voting
     def displayNetwork(self):
         Graph = nx.Graph()
+        color_map = []
         # Add in edges
         for key in self.grid.keys():
             iagent = random.randrange(0, len(self.poplist))
             # print(self.poplist[key].uncertainty,self.poplist[key].id)
             self.grid[key] = self.poplist[iagent]
-            Graph.add_edges_from([(self.poplist[key], self.grid[key])])
+            Graph.add_edges_from([(self.poplist[key].id, self.grid[key].id)])
+            # Make color of node blue if voting or red otherwise
+            if self.poplist[key].voting:
+                color_map.append('blue')
+            else:
+                color_map.append('red')
+        nx.draw(Graph, node_color=color_map, with_labels=True)
+        plt.show()
 
-        pos = nx.spring_layout(Graph, k=0.5, iterations=100)
-        for n, p in pos.items():
-            Graph.nodes[n]['pos'] = p
+    # Displays pichart to show who won
+    def displayChart(self):
+        BlueFavour = 100 * (self.aiplayers.votingPercentage(self.poplist))
+        RedFavour = 100 - BlueFavour
+        fig1, ax1 = plt.subplots()
+        chartLabels = 'Voting', 'Not Voting'
+        sizes = [BlueFavour, RedFavour]
+        chartColors = ["blue", "red"]
+        ax1.pie(sizes, labels=chartLabels,  autopct='%1.1f%%',
+                shadow=True, colors=chartColors)
+        # plt.pie(votingArray, labels=chartLabels, colors=chartColors)
+        ax1.axis('equal')
+        fig = plt.gcf()
+        fig.set_size_inches(6, 6)
+        plt.show()
 
-        edge_trace = go.Scatter(
-            x=[],
-            y=[],
-            line=dict(width=0.5, color='#888'),
-            hoverinfo='none',
-            mode='lines')
-        for edge in Graph.edges():
-            x0, y0 = Graph.nodes[edge[0]]['pos']
-            x1, y1 = Graph.nodes[edge[1]]['pos']
-            edge_trace['x'] += tuple([x0, x1, None])
-            edge_trace['y'] += tuple([y0, y1, None])
-
-        node_trace = go.Scatter(
-            x=[],
-            y=[],
-            text=[],
-            mode='markers+text',
-            hoverinfo='text',
-            marker=dict(
-                showscale=True,
-                colorscale='pinkyl',
-                reversescale=True,
-                color=[],
-                size=37,
-                colorbar=dict(
-                    thickness=1,
-                    title='Node Connections',
-                    xanchor='left',
-                    titleside='right'),
-                line=dict(width=0)))
-        for node in Graph.nodes():
-            x, y = Graph.nodes[node]['pos']
-            node_trace['x'] += tuple([x])
-            node_trace['y'] += tuple([y])
-        for node, adjacencies in enumerate(Graph.adjacency()):
-            node_trace['marker']['color'] += tuple([len(adjacencies[1])])
-            node_info = adjacencies[0]
-            node_trace['text'] += tuple([node_info])
-
-        title = "Information Modelling - CITS3001"
-        fig = go.Figure(data=[edge_trace, node_trace],
-                        layout=go.Layout(
-                        title=title,
-                        titlefont=dict(size=16),
-                        showlegend=False,
-                        hovermode='closest',
-                        margin=dict(b=21, l=5, r=5, t=40),
-                        annotations=[
-                            dict(text="", showarrow=False, xref="paper", yref="paper")],
-                        xaxis=dict(showgrid=False, zeroline=False,
-                                   showticklabels=False, mirror=True),
-                        yaxis=dict(showgrid=False, zeroline=False, showticklabels=False, mirror=True)))
-        fig.show()
+    def getVoting(self):
+        percentage = 100 * (self.aiplayers.votingPercentage(self.poplist))
+        return percentage

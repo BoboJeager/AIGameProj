@@ -33,14 +33,8 @@ def main():
         ginstance = Gameplay(x, startingMaxUncertainty,
                              startingMinUncertainty, playerPlayingBlue, playerPlayingRed)
         ginstance.setup()
-        # ginstance.displayNetwork()
         GameRunning = True
         while GameRunning:
-
-            # ginstance.currentBias()
-            # ginstance.heuristic()
-            # If red team has no followers, end game - needs red team follower functionality first
-            # print("This is the red team's turn")
             print("This red teams turn!")
             ginstance.redTeamTurn()
             ginstance.interactionPhase()
@@ -50,13 +44,24 @@ def main():
             print("Blue energy remaining: ",
                   ginstance.aiplayers.blueAI.energy)
             ginstance.interactionPhase()
-            ginstance.displayNetwork()
 
             if ginstance.bluePlayer.energy <= 0 or ginstance.aiplayers.blueAI.energy <= 0:
                 break
         print(
-            "The game has ended! Please see the network displayed for the final results of the game!")
-
+            "The game has ended!")
+        if ginstance.getVoting() > 50:
+            print("Blue has won the game and convinced the majority of Green to vote!")
+            print(ginstance.getVoting(),
+                  "% of the population decided to vote.")
+        elif ginstance.getVoting() < 50:
+            print("Red has won the game and convinced the majority of Green to vote!")
+            print((100 - ginstance.getVoting()),
+                  "% of the population decided to not vote")
+        else:
+            print(
+                "The game was a tie! Half of the population decided to vote and half decided not to.")
+        ginstance.displayNetwork()
+        ginstance.displayChart()
     except ValueError:
         print('Error! The number entered must be an int. ')
 
