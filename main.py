@@ -1,9 +1,11 @@
 from gameplay import Gameplay
 from blueNode import BlueNode
+import math
 
 
 def main():
     x = input("Please enter the size for the game: ")
+    greyagentsforBlue = math.ceil(float(x)*0.05)
     startingMaxUncertainty = input("input MAX uncertainty green can have: ")
     startingMinUncertainty = input(
         "input MIN Uncertainty green can have (enter a positive number and it will be converted to negative): ")
@@ -31,7 +33,7 @@ def main():
         startingMinUncertainty = float(startingMinUncertainty)
         x = int(x)
         ginstance = Gameplay(x, startingMaxUncertainty,
-                             startingMinUncertainty, playerPlayingBlue, playerPlayingRed)
+                             startingMinUncertainty, playerPlayingBlue, playerPlayingRed, greyagentsforBlue)
         ginstance.setup()
         GameRunning = True
         while GameRunning:
@@ -68,4 +70,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# See PyCharm help at https://www.jetbrains.com/help/pycharm/10

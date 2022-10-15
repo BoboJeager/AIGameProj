@@ -4,9 +4,9 @@ from blueNode import BlueNode
 
 
 class ai:
-    def __init__(self):
+    def __init__(self,noofgreyagents):
         self.redAI = RedNode()
-        self.blueAI = BlueNode()
+        self.blueAI = BlueNode(noofgreyagents)
 
     def blueAIagent(self, populationList, grid):
         moveScores = []

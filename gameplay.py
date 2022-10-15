@@ -14,17 +14,17 @@ import copy
 
 class Gameplay:
 
-    def __init__(self, size, maxUncertainty, minUncertainty, blueRealPlayer, redRealPlayer):
+    def __init__(self, size, maxUncertainty, minUncertainty, blueRealPlayer, redRealPlayer, nogreyagents):
         self.size = size
         self.grid = {}
         self.poplist = []
         self.maxUncertainty = maxUncertainty
         self.minUncertainty = minUncertainty
-        self.bluePlayer = BlueNode()
+        self.bluePlayer = BlueNode(nogreyagents)
         self.redPlayer = RedNode()
         self.blueRealPlayer = blueRealPlayer
         self.redRealPlayer = redRealPlayer
-        self.aiplayers = ai()
+        self.aiplayers = ai(nogreyagents)
 
     def setup(self):
         # Press Ctrl+F8 to toggle the breakpoint.
