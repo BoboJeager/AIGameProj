@@ -17,7 +17,7 @@ def main():
 
     players = input("Players playing: ")
     if(int(players) == 1):
-        team = input("Do you want to play as blue? (y/n)")
+        team = input("Do you want to play as blue? (y/n) ")
         if(team == 'y'):
             playerPlayingBlue = True
         else:
@@ -27,6 +27,8 @@ def main():
         playerPlayingRed = True
 
     numGames = input("How many games do you wish to run? ")
+    displayGraphAfter = input(
+        "Do you want to be asked to display the graph after each game? (y/n) ")
 
     # Need checks for valid inputs here - for testing play as both players for now
     # Starting uncertainties seems very high (all close to/if not at 1) - nvm I think this just break when min - uncertainty is -1
@@ -50,7 +52,7 @@ def main():
                 ginstance.interactionPhase()
                 if int(players) != 0:
                     showGraph = input(
-                        "Do you want to view the graph of the current state of the game? (y/n)")
+                        "Do you want to view the graph of the current state of the game? (y/n) ")
                     if showGraph == 'y':
                         ginstance.displayWindows()
                 print("This is the blue teams turn")
@@ -60,7 +62,7 @@ def main():
                 ginstance.interactionPhase()
                 if int(players) != 0:
                     showGraph = input(
-                        "Do you want to view the graph of the current state of the game? (y/n)")
+                        "Do you want to view the graph of the current state of the game? (y/n) ")
                     if showGraph == 'y':
                         ginstance.displayWindows()
                 if ginstance.bluePlayer.energy <= 0 or ginstance.aiplayers.blueAI.energy <= 0:
@@ -83,13 +85,14 @@ def main():
                 print(
                     "The game was a tie! Half of the population decided to vote and half decided not to.")
                 winners.append("Tie")
-            winpercentage.append(ginstance.getVoting())
-            showGraph = input(
-                "Do you want to view the graph of the current state of the game? (y/n)")
-            if showGraph == 'y':
-                ginstance.displayWindows()
-            else:
-                continue
+            if displayGraphAfter == 'y':
+                winpercentage.append(ginstance.getVoting())
+                showGraph = input(
+                    "Do you want to view the graph of the current state of the game? (y/n) ")
+                if showGraph == 'y':
+                    ginstance.displayWindows()
+                else:
+                    continue
 
     except ValueError:
         print('Error! The number entered must be an int. ')
