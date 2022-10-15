@@ -206,7 +206,7 @@ class Gameplay:
         print('You are all winners')
 
    # Displays network with colors representing voting
-    def displayNetwork(self):
+    def displayWindows(self):
         Graph = nx.Graph()
         color_map = []
         # Add in edges
@@ -221,10 +221,6 @@ class Gameplay:
             else:
                 color_map.append('red')
         nx.draw(Graph, node_color=color_map, with_labels=True)
-        plt.show()
-
-    # Displays pichart to show who won
-    def displayChart(self):
         BlueFavour = 100 * (self.aiplayers.votingPercentage(self.poplist))
         RedFavour = 100 - BlueFavour
         fig1, ax1 = plt.subplots()

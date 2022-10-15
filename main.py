@@ -60,8 +60,7 @@ def main():
         else:
             print(
                 "The game was a tie! Half of the population decided to vote and half decided not to.")
-        ginstance.displayNetwork()
-        ginstance.displayChart()
+        ginstance.displayWindows()
     except ValueError:
         print('Error! The number entered must be an int. ')
 
