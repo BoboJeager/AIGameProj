@@ -10,6 +10,7 @@ import matplotlib as mpl
 import networkx as nx
 import plotly.graph_objects as go
 import copy
+import math
 
 
 class Gameplay:
@@ -221,7 +222,9 @@ class Gameplay:
             else:
                 color_map.append('red')
         nx.draw(Graph, node_color=color_map, with_labels=True)
-        BlueFavour = 100 * (self.aiplayers.votingPercentage(self.poplist))
+        # Pichart
+        BlueFavour = round(
+            (100 * (self.aiplayers.votingPercentage(self.poplist))), 1)
         RedFavour = 100 - BlueFavour
         fig1, ax1 = plt.subplots()
         chartLabels = 'Voting', 'Not Voting'
@@ -236,5 +239,6 @@ class Gameplay:
         plt.show()
 
     def getVoting(self):
-        percentage = 100 * (self.aiplayers.votingPercentage(self.poplist))
+        percentage = round(
+            (100 * (self.aiplayers.votingPercentage(self.poplist))), 1)
         return percentage
