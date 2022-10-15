@@ -17,7 +17,7 @@ class BlueNode:
                                ("7. dont belif media pls (broadcast power 4/Energy cost 20)",
                                 4), ("8. i swear we're better (broadcast power 4/Energy cost 20)", 4),
                                ("9. free healthcare (broadcast power 5/Energy cost 30)", 5), ("10. for the ppl by the ppl (broadcast power 5/Energy cost 30)", 5)]
-        self.greyAgentsAvailable = 0
+        self.greyAgentsAvailable = 10
 
     def setenergy(self, value):
         self.energy -= value
@@ -130,7 +130,7 @@ class BlueNode:
             print("agent deployed")
             rnum = random.randrange(1, 6)
             ally = True
-            if (rnum == 2):
+            if (rnum < 2):
                 ally = False
             gAgent = GreyNode(len(poplist), ally)
             poplist.append(gAgent)

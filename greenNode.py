@@ -32,8 +32,9 @@ class greenNode:
                     print(self.id, 'is convinced\n')
                     if(neighbour.voting != self.voting):
                         self.setUncertainty(influenceUncertainty)
-                        if(self.uncertainty > 1):
-                            self.uncertainty = 1
+                        self.flipVote()
+                        x = 1 - self.uncertainty
+                        self.uncertainty = 1 - x
                     else:
                         self.setUncertainty(-influenceUncertainty)
                         if(self.uncertainty < -1):
@@ -43,7 +44,9 @@ class greenNode:
                     if (neighbour.voting != self.voting):
                         neighbour.setUncertainty(influenceUncertainty)
                         if (neighbour.uncertainty > 1):
-                            neighbour.uncertainty = 1
+                            self.flipVote()
+                            x = 1 - self.uncertainty
+                            self.uncertainty = 1 - x
                     else:
                         neighbour.setUncertainty(-influenceUncertainty)
                         if (neighbour.uncertainty < -1):

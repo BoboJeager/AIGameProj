@@ -32,7 +32,7 @@ class ai:
         bestMove = moveScores.index(bestNumber)
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", moveScores)
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", bestMove)
-        if (bestMove < 10):
+        if (bestMove < 9):
             self.blueAI.broadcastMessage(populationList, bestMove + 1)
             # self.blueAI.setenergy(blueEnergy[bestMove])
         else:
