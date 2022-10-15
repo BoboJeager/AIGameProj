@@ -5,6 +5,7 @@ import math
 
 def main():
     x = input("Please enter the size for the game: ")
+    #grey agents based on board size
     greyagentsforBlue = math.ceil(float(x)*0.05)
     startingMaxUncertainty = input("input MAX uncertainty green can have: ")
     startingMinUncertainty = input(
