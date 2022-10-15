@@ -5,16 +5,16 @@ import collections
 class RedNode:
 
     def __init__(self):
-        self.messagesString = [("1. Vote Plox (broadcast power 1/Energy cost 5)", 1),
-                               ("2. Democracy good (broadcast power 1/Energy cost 5)", 1),
-                               ("3. just vote pls, do it (broadcast power 2/Energy cost 10)", 2),
-                               ("4. I beg you (broadcast power 2)/Energy cost 10)", 2),
-                               ("5. red no good (broadcast power 3)/Energy cost 15", 3),
-                               ("6. boo red fake news (broadcast power 3)/Energy cost 15)", 3),
-                               ("7. dont belif media pls (broadcast power 4/Energy cost 20)", 4),
-                               ("8. i swear we're better (broadcast power 4/Energy cost 20)", 4),
-                               ("9. free healthcare (broadcast power 5/Energy cost 30)", 5),
-                               ("10. for the ppl by the ppl (broadcast power 5/Energy cost 30)", 5)]
+        self.messagesString = [("1. Voting won't change anything (broadcast power 1/Energy cost 5)", 1),
+                               ("2. We've got big plans for you (broadcast power 1/Energy cost 5)", 1),
+                               ("3. We reduced unemployment rates last year (broadcast power 2/Energy cost 10)", 2),
+                               ("4. Economy went up by 30% (broadcast power 2)/Energy cost 10)", 2),
+                               ("5. Blue has false advertising (broadcast power 3)/Energy cost 15", 3),
+                               ("6. Blue is trying to remove your free choice by forcing you to vote (broadcast power 3)/Energy cost 15)", 3),
+                               ("7. We are the real truth (broadcast power 4/Energy cost 20)", 4),
+                               ("8. Life just gets better with us (broadcast power 4/Energy cost 20)", 4),
+                               ("9. Why change what already works (broadcast power 5/Energy cost 30)", 5),
+                               ("10. Order and structure has kept us safe and prosperous (broadcast power 5/Energy cost 30)", 5)]
 
     # For player
     def broadcast(self, populationGrid, broadcastOption):
