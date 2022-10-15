@@ -2,7 +2,7 @@ from gameplay import Gameplay
 import math
 import matplotlib.pyplot as plt
 
-
+#runs game
 def main():
     x = input("Please enter the size for the game: ")
     #grey agents based on board size
