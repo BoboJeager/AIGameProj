@@ -17,7 +17,6 @@ class GreyNode:
 
     def interact(self,neighbour):
         if (self.id != neighbour.id):
-            print(self.id, ' is interacting with ', neighbour.id)
             influenceUncertainty = float(
                 "{:.1f}".format(random.uniform(0.1, 0.4)))
             influenced = random.randrange(1, 3)
@@ -32,5 +31,3 @@ class GreyNode:
                     neighbour.setUncertainty(-influenceUncertainty)
                     if (neighbour.uncertainty < -1):
                         neighbour.uncertainty = -1
-            else:
-                print('no one is convinced\n')

@@ -30,8 +30,8 @@ class ai:
                     moveScores.append(-10000000000000)
         bestNumber = max(moveScores)
         bestMove = moveScores.index(bestNumber)
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", moveScores)
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", bestMove)
+        print("Move scores = ", moveScores)
+        print("The best move is = ", bestMove)
         if (bestMove < 9):
             self.blueAI.broadcastMessage(populationList, bestMove + 1)
             # self.blueAI.setenergy(blueEnergy[bestMove])
@@ -156,8 +156,8 @@ class ai:
             moveScores.append(score)
         bestNumber = max(moveScores)
         bestMove = moveScores.index(bestNumber)
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", moveScores)
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", bestMove)
+        print("Move scores = ", moveScores)
+        print("The best move is = ", bestMove)
         self.redAI.broadcast(populationList, bestMove + 1)
 
     def redminimax(self, populationList, depth, aiturn):

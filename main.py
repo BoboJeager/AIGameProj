@@ -1,12 +1,11 @@
 from gameplay import Gameplay
-from blueNode import BlueNode
 import math
 import matplotlib.pyplot as plt
 
 
 def main():
     x = input("Please enter the size for the game: ")
-    # grey agents based on board size
+    #grey agents based on board size
     greyagentsforBlue = math.ceil(float(x)*0.05)
     startingMaxUncertainty = input("input MAX uncertainty green can have: ")
     startingMinUncertainty = input(
@@ -128,4 +127,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# See PyCharm help at https://www.jetbrains.com/help/pycharm/10

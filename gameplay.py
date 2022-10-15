@@ -128,7 +128,7 @@ class Gameplay:
         # for key, value in self.grid.items():
         #     key.interact(value)
 
-        print('Interaction is over...')
+        print('Interaction is over...\n')
 
     def currentBias(self):
         votingcount = 0

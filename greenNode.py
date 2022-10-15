@@ -23,13 +23,11 @@ class greenNode:
 
     def interact(self, neighbour):
         if(self.id != neighbour.id):
-            print(self.id, ' is interacting with ', neighbour.id)
             influenceUncertainty = float(
                 "{:.1f}".format(random.uniform(0.1, 0.4)))
             influenced = random.randrange(1, 3)
             if (influenced == 1):
                 if(neighbour.uncertainty > self.uncertainty):
-                    print(self.id, 'is convinced\n')
                     if(neighbour.voting != self.voting):
                         self.setUncertainty(influenceUncertainty)
                         self.flipVote()
@@ -40,7 +38,6 @@ class greenNode:
                         if(self.uncertainty < -1):
                             self.uncertainty = -1
                 elif(neighbour.uncertainty < self.uncertainty):
-                    print(self.id, 'is convincing\n')
                     if (neighbour.voting != self.voting):
                         neighbour.setUncertainty(influenceUncertainty)
                         if (neighbour.uncertainty > 1):
@@ -51,7 +48,3 @@ class greenNode:
                         neighbour.setUncertainty(-influenceUncertainty)
                         if (neighbour.uncertainty < -1):
                             neighbour.uncertainty = -1
-            else:
-                print('no one is convinced\n')
-        else:
-            print(self.id, 'is talking to themselves what a loser\n')
