@@ -2,10 +2,12 @@ from gameplay import Gameplay
 import math
 import matplotlib.pyplot as plt
 
-#runs game
+# runs game
+
+
 def main():
     x = input("Please enter the size for the game: ")
-    #grey agents based on board size
+    # grey agents based on board size
     greyagentsforBlue = math.ceil(float(x)*0.05)
     startingMaxUncertainty = input("input MAX uncertainty green can have: ")
     startingMinUncertainty = input(
@@ -24,6 +26,8 @@ def main():
         playerPlayingBlue = True
         playerPlayingRed = True
 
+    numGames = input("How many games do you wish to run? ")
+
     # Need checks for valid inputs here - for testing play as both players for now
     # Starting uncertainties seems very high (all close to/if not at 1) - nvm I think this just break when min - uncertainty is -1
 
@@ -31,7 +35,7 @@ def main():
     winners = []
     winpercentage = []
     try:
-        for i in range(20):
+        for i in range(int(numGames)):
             startingMaxUncertainty = float(startingMaxUncertainty)
             startingMinUncertainty = float(startingMinUncertainty)
             x = int(x)
@@ -49,9 +53,6 @@ def main():
                         "Do you want to view the graph of the current state of the game? (y/n)")
                     if showGraph == 'y':
                         ginstance.displayWindows()
-                    else:
-                        continue
-
                 print("This is the blue teams turn")
                 ginstance.blueTeamTurn()
                 print("Blue energy remaining: ",
@@ -62,9 +63,6 @@ def main():
                         "Do you want to view the graph of the current state of the game? (y/n)")
                     if showGraph == 'y':
                         ginstance.displayWindows()
-                    else:
-                        continue
-
                 if ginstance.bluePlayer.energy <= 0 or ginstance.aiplayers.blueAI.energy <= 0:
                     break
             print(
@@ -86,42 +84,42 @@ def main():
                     "The game was a tie! Half of the population decided to vote and half decided not to.")
                 winners.append("Tie")
             winpercentage.append(ginstance.getVoting())
-            if int(players) != 0:
-                showGraph = input(
-                    "Do you want to view the graph of the current state of the game? (y/n)")
-                if showGraph == 'y':
-                    ginstance.displayWindows()
-                else:
-                    continue
+            showGraph = input(
+                "Do you want to view the graph of the current state of the game? (y/n)")
+            if showGraph == 'y':
+                ginstance.displayWindows()
+            else:
+                continue
 
     except ValueError:
         print('Error! The number entered must be an int. ')
-    print(winners)
-    print(winpercentage)
-    BlueWin = 0
-    RedWin = 0
-    NoWin = 0
-    for item in winners:
-        if item == 'Blue':
-            BlueWin += 1
-        elif item == 'Red':
-            RedWin += 1
-        else:
-            NoWin += 1
-    print("Number of blue wins: ", BlueWin)
-    print("Number of red wins: ", RedWin)
-    print("Number of tied games: ", NoWin)
+    if int(numGames) > 1:
+        print(winners)
+        print(winpercentage)
+        BlueWin = 0
+        RedWin = 0
+        NoWin = 0
+        for item in winners:
+            if item == 'Blue':
+                BlueWin += 1
+            elif item == 'Red':
+                RedWin += 1
+            else:
+                NoWin += 1
+        print("Number of blue wins: ", BlueWin)
+        print("Number of red wins: ", RedWin)
+        print("Number of tied games: ", NoWin)
 
-    fig1, ax1 = plt.subplots()
-    sizes = [BlueWin, RedWin, NoWin]
-    chartLabels = "BlueWins", "RedWins", "Tie"
-    chartColors = ["blue", "red", "grey"]
-    ax1.pie(sizes, labels=chartLabels,  autopct='%1.1f%%',
-            shadow=True, colors=chartColors)
-    ax1.axis('equal')
-    fig = plt.gcf()
-    fig.set_size_inches(6, 6)
-    plt.show()
+        fig1, ax1 = plt.subplots()
+        sizes = [BlueWin, RedWin, NoWin]
+        chartLabels = "BlueWins", "RedWins", "Tie"
+        chartColors = ["blue", "red", "grey"]
+        ax1.pie(sizes, labels=chartLabels,  autopct='%1.1f%%',
+                shadow=True, colors=chartColors)
+        ax1.axis('equal')
+        fig = plt.gcf()
+        fig.set_size_inches(6, 6)
+        plt.show()
 
 
 if __name__ == '__main__':

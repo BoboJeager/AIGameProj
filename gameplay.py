@@ -130,33 +130,6 @@ class Gameplay:
 
         print('Interaction is over...\n')
 
-    def currentBias(self):
-        votingcount = 0
-        notvotingcount = 0
-        uncertaintyavgVoting = 0
-        uncertaintyavgNotVoting = 0
-        for agent in self.poplist:
-            if (agent.voting):
-                votingcount += 1
-                uncertaintyavgVoting += agent.uncertainty
-            else:
-                notvotingcount += 1
-                uncertaintyavgNotVoting += agent.uncertainty
-
-        currvotingpercentage = (votingcount/len(self.poplist)) * 100
-        uncertaintyavgVoting /= votingcount
-        uncertaintyavgNotVoting /= notvotingcount
-        print('people voting =', "{:.1f}".format(currvotingpercentage))
-        print('the uncertainty average of people voting =',
-              "{:.1f}".format(uncertaintyavgVoting))
-        print('the uncertainty average of people NOT voting =',
-              "{:.1f}".format(uncertaintyavgNotVoting))
-        return_list = []
-        return_list.append(currvotingpercentage)
-        return_list.append(uncertaintyavgVoting)
-        return_list.append(uncertaintyavgNotVoting)
-        return return_list
-
     def blueTeamTurn(self):
         if (self.blueRealPlayer):
             print("current energy = ", self.bluePlayer.energy)
