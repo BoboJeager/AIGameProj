@@ -4,9 +4,13 @@ from blueNode import BlueNode
 
 
 class ai:
-    def __init__(self,noofgreyagents):
+    def __init__(self, noofgreyagents):
         self.redAI = RedNode()
         self.blueAI = BlueNode(noofgreyagents)
+        self.redAILearningGraph = []
+        self.turn = 0
+        self.redFirstFiveMoves = []
+        self.initialState = None
 
     def blueAIagent(self, populationList, grid):
         moveScores = []
@@ -53,7 +57,7 @@ class ai:
                     self.blueAI.deploySimulatedGreyAgent(newState)
 
                 currentMaxScore = max(
-                    currentMaxScore, self.blueminimax(newState, depth-1, False))
+                    currentMaxScore, self.blueminimax(newState, depth - 1, False))
 
             return currentMaxScore
         else:
@@ -62,7 +66,7 @@ class ai:
             for i in range(10):
                 self.redAI.simulatedbroadcast(newState, i + 1)
                 currentMinScore = min(
-                    currentMinScore, self.blueminimax(newState, depth-1, True))
+                    currentMinScore, self.blueminimax(newState, depth - 1, True))
             return currentMinScore
 
     # Iteration number 4 now
@@ -87,7 +91,7 @@ class ai:
                 uncertaintyavgNotVoting += agent.uncertainty
         # print("voting count = ",votingcount)
         # print("uncertaintyavgVoting = ",uncertaintyavgVoting)
-        currvotingpercentage = (votingcount/len(populationlist))
+        currvotingpercentage = (votingcount / len(populationlist))
         if votingcount == 0:
             score -= 10000000
         else:
@@ -145,20 +149,42 @@ class ai:
         # print("UncertaintyAvgNotVoting ", uncertaintyavgNotVoting)
         # print(int(score))
         return int(score)
+
     # red AI functions
 
     def redAIagent(self, populationList):
         moveScores = []
-        for i in range(10):
-            boardcopy = populationList.copy()
-            self.redAI.simulatedbroadcast(boardcopy, i + 1)
-            score = self.redminimax(boardcopy, 3, False)
-            moveScores.append(score)
-        bestNumber = max(moveScores)
-        bestMove = moveScores.index(bestNumber)
-        print("Move scores = ", moveScores)
-        print("The best move is = ", bestMove)
-        self.redAI.broadcast(populationList, bestMove + 1)
+        bestNextFiveMoves = []
+        if (self.turn == 0):
+            self.initialState = populationList.copy()
+            bestNextFiveMoves = self.reccomendedMoveSet(populationList)
+        if self.turn < 9:
+            if not bestNextFiveMoves == None and len(bestNextFiveMoves) >0:
+                self.redAI.broadcast(populationList, bestNextFiveMoves[self.turn] + 1)
+            else:
+                for i in range(10):
+                    boardcopy = populationList.copy()
+                    self.redAI.simulatedbroadcast(boardcopy, i + 1)
+                    score = self.redminimax(boardcopy, 3, False)
+                    moveScores.append(score)
+                bestNumber = max(moveScores)
+                bestMove = moveScores.index(bestNumber)
+                print("Move scores = ", moveScores)
+                print("The best move is = ", bestMove)
+                self.redAI.broadcast(populationList, bestMove + 1)
+                self.redFirstFiveMoves.append(bestMove)
+
+        else:
+            for i in range(10):
+                boardcopy = populationList.copy()
+                self.redAI.simulatedbroadcast(boardcopy, i + 1)
+                score = self.redminimax(boardcopy, 3, False)
+                moveScores.append(score)
+            bestNumber = max(moveScores)
+            bestMove = moveScores.index(bestNumber)
+            print("Move scores = ", moveScores)
+            print("The best move is = ", bestMove)
+            self.redAI.broadcast(populationList, bestMove + 1)
 
     def redminimax(self, populationList, depth, aiturn):
         if depth <= 0 or abs(self.redHeuristic(populationList)) > 10000:
@@ -270,5 +296,45 @@ class ai:
         for agent in populationlist:
             if (agent.voting):
                 votingcount += 1
-        currvotingpercentage = (votingcount/len(populationlist))
+        currvotingpercentage = (votingcount / len(populationlist))
         return currvotingpercentage
+
+    def calculateCurrentState(self, population):
+        notvotingcount = 0
+        uncertaintyavgNotVoting = 0
+        for agent in population:
+            if not (agent.voting):
+                notvotingcount += 1
+                uncertaintyavgNotVoting += agent.uncertainty
+        votingPercentage = 100 - notvotingcount
+        votingdifference = votingPercentage - notvotingcount
+        if notvotingcount > 0:
+            uncertaintyavgNotVoting /= notvotingcount
+        else:
+            uncertaintyavgNotVoting = -5
+        return [votingdifference, uncertaintyavgNotVoting]
+
+    def compareState(self, initalState, storedState):
+        if (initalState[0] < storedState[0] + 2 or initalState[0] > storedState[0] - 2) and (
+                initalState[1] + 0.2 or initalState[1] > storedState[1] - 0.2):
+            return True
+        else:
+            return False
+
+    def saveRedWinningState(self, initialpopulation, wonby, firstfivemove):
+        initialstate = self.calculateCurrentState(initialpopulation)
+        winState = [initialstate[0], initialstate[1], wonby, firstfivemove]
+        self.redAILearningGraph.append(winState)
+
+    def reccomendedMoveSet(self, population):
+        winningpossibilities = []
+        checkState = self.calculateCurrentState(population)
+        if (len(self.redAILearningGraph) > 0):
+            for i in self.redAILearningGraph:
+                if self.compareState(checkState, i):
+                    winningpossibilities.append(i)
+            bestMoveSet = max(winningpossibilities, key=lambda item:item[2])[3]
+            print("best Move set = ", bestMoveSet)
+            return bestMoveSet
+        else:
+            return None
