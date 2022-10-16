@@ -3,11 +3,10 @@ import math
 import matplotlib.pyplot as plt
 
 # runs game
-
-
 def main():
     x = input("Please enter the size for the game: ")
     # grey agents based on board size
+    redLearningGraph = []
     greyagentsforBlue = math.ceil(float(x)*0.05)
     startingMaxUncertainty = input("input MAX uncertainty green can have: ")
     startingMinUncertainty = input(
@@ -41,6 +40,7 @@ def main():
             x = int(x)
             ginstance = Gameplay(x, startingMaxUncertainty,
                                  startingMinUncertainty, playerPlayingBlue, playerPlayingRed, greyagentsforBlue)
+            ginstance.aiplayers.redAILearningGraph = redLearningGraph
             ginstance.setup()
 
             GameRunning = True
@@ -58,6 +58,7 @@ def main():
                 print("Blue energy remaining: ",
                       ginstance.aiplayers.blueAI.energy)
                 ginstance.interactionPhase()
+                ginstance.aiplayers.turn += 1
                 if int(players) != 0:
                     showGraph = input(
                         "Do you want to view the graph of the current state of the game? (y/n)")
@@ -67,6 +68,7 @@ def main():
                     break
             print(
                 "The game has ended!")
+            ginstance.aiplayers.turn = 0
             if ginstance.getVoting() > 50:
                 print(
                     "Blue has won the game and convinced the majority of Green to vote!")
@@ -76,20 +78,24 @@ def main():
             elif ginstance.getVoting() < 50:
                 print(
                     "Red has won the game and convinced the majority of Green to vote!")
-                print((100 - ginstance.getVoting()),
+                winningpercentage = 100 - ginstance.getVoting()
+                print(winningpercentage,
                       "% of the population decided to not vote")
                 winners.append("Red")
+                winningpercentage -= ginstance.getVoting()
+                ginstance.aiplayers.saveRedWinningState(ginstance.aiplayers.initialState,winningpercentage,ginstance.aiplayers.redFirstFiveMoves)
+                redLearningGraph = ginstance.aiplayers.redAILearningGraph.copy()
             else:
                 print(
                     "The game was a tie! Half of the population decided to vote and half decided not to.")
                 winners.append("Tie")
             winpercentage.append(ginstance.getVoting())
-            showGraph = input(
-                "Do you want to view the graph of the current state of the game? (y/n)")
-            if showGraph == 'y':
-                ginstance.displayWindows()
-            else:
-                continue
+            # showGraph = input(
+            #     "Do you want to view the graph of the current state of the game? (y/n)")
+            # if showGraph == 'y':
+            #     ginstance.displayWindows()
+            # else:
+            #     continue
 
     except ValueError:
         print('Error! The number entered must be an int. ')
@@ -109,6 +115,7 @@ def main():
         print("Number of blue wins: ", BlueWin)
         print("Number of red wins: ", RedWin)
         print("Number of tied games: ", NoWin)
+        print("red learning graph is", ginstance.aiplayers.redAILearningGraph)
 
         fig1, ax1 = plt.subplots()
         sizes = [BlueWin, RedWin, NoWin]
