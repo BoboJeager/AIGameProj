@@ -116,31 +116,32 @@ class Gameplay:
                 count += 1
 
     def interactionPhase(self):
-        print('Everyone is talking...')
+        print("\n************ Interaction Phase ************")
+        print('\tEveryone is talking...')
         for key in self.grid.keys():
             iagent = random.randrange(0, len(self.poplist))
             self.grid[key] = self.poplist[iagent]
             self.poplist[key].interact(self.grid[key])
-        print('Interaction is over...\n')
+        print('\tInteraction is over...\n')
 
     def blueTeamTurn(self):
         if (self.blueRealPlayer):
-            print("current energy = ", self.bluePlayer.energy)
-            print("Grey Agents at your disposal = ",
+            print("\tCurrent energy = ", self.bluePlayer.energy,)
+            print("\tGrey Agents at your disposal = ",
                   self.bluePlayer.greyAgentsAvailable)
-            print("press 1 to broadcast message")
-            print("press 2 to deploy a grey agent\n")
-            choice = input()
+            print("\tPress 1 to broadcast message")
+            print("\tPress 2 to deploy a grey agent\n")
+            choice = input("Choice: ")
             try:
                 choice = int(choice)
                 if (choice == 1):
                     for t in self.bluePlayer.messagesString:
                         print(t[0])
                     option = input(
-                        "\nWhich message do you want to broadcast?\n")
+                        "\nWhich message do you want to broadcast: ")
                     option = int(option)
                     self.bluePlayer.broadcastMessage(self.poplist, option)
-                    print(self.bluePlayer.energy)
+                    print("\tBlue energy remaining: ", self.bluePlayer.energy)
                 else:
                     if (self.bluePlayer.greyAgentsAvailable > 0):
                         self.bluePlayer.deployGreyAgent(
@@ -150,10 +151,11 @@ class Gameplay:
                         for t in self.bluePlayer.messagesString:
                             print(t[0])
                         option = input(
-                            "\nWhich message do you want to broadcast?\n")
+                            "\nWhich message do you want to broadcast: ")
                         option = int(option)
                         self.bluePlayer.broadcastMessage(self.poplist, option)
-                        print(self.bluePlayer.energy)
+                        print("\tBlue energy remaining: ",
+                              self.bluePlayer.energy)
 
             except ValueError:
                 print('Error - Number must be an int')
@@ -165,7 +167,7 @@ class Gameplay:
         if self.redRealPlayer:
             for t in self.redPlayer.messagesString:
                 print(t[0])
-            option = input("\nWhich message do you want to broadcast?\n")
+            option = input("\nWhich message do you want to broadcast: ")
             option = int(option)
             self.redPlayer.broadcast(self.poplist, option)
         else:

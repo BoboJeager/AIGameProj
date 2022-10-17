@@ -28,7 +28,7 @@ def main():
 
     numGames = input("How many games do you wish to run? ")
     displayGraphAfter = input(
-        "Do you want to be asked to display the graph after each game? (y/n) ")
+        "Do you want to be asked to display the graph after each game? (y/n): ")
 
     winners = []
     winpercentage = []
@@ -44,23 +44,23 @@ def main():
 
             GameRunning = True
             while GameRunning:
-                print("This red teams turn!")
+                print("\nThis is red teams turn!")
                 ginstance.redTeamTurn()
                 ginstance.interactionPhase()
                 if int(players) != 0:
                     showGraph = input(
-                        "Do you want to view the graph of the current state of the game? (y/n) ")
+                        "Do you want to view the graph of the current state of the game? (y/n): ")
                     if showGraph == 'y':
                         ginstance.displayWindows()
-                print("This is the blue teams turn")
+                print("\nThis is the blue teams turn!")
                 ginstance.blueTeamTurn()
-                print("Blue energy remaining: ",
-                      ginstance.aiplayers.blueAI.energy)
+                # print("\tBlue energy remaining: ",
+                #       ginstance.bluePlayer.energy)
                 ginstance.interactionPhase()
                 ginstance.aiplayers.turn += 1
                 if int(players) != 0:
                     showGraph = input(
-                        "Do you want to view the graph of the current state of the game? (y/n) ")
+                        "Do you want to view the graph of the current state of the game? (y/n): ")
                     if showGraph == 'y':
                         ginstance.displayWindows()
                 if ginstance.bluePlayer.energy <= 0 or ginstance.aiplayers.blueAI.energy <= 0:
@@ -92,7 +92,7 @@ def main():
             if displayGraphAfter == 'y':
 
                 showGraph = input(
-                    "Do you want to view the graph of the current state of the game? (y/n) ")
+                    "Do you want to view the graph of the current state of the game? (y/n) \n")
                 if showGraph == 'y':
                     ginstance.displayWindows()
                 else:

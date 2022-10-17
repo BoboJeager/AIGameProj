@@ -9,14 +9,14 @@ class BlueNode:
 
     def __init__(self, nogreyAgents):
         self.energy = 100
-        self.messagesString = [("1. Every vote matters (broadcast power 1/Energy cost 5)", 1), ("2. Don't give up your voice (broadcast power 1/Energy cost 5)", 1),
-                               ("3. Voting is an opportunity for change (broadcast power 2/Energy cost 10)",
-                                2), ("4. Be the change you want to see (broadcast power 2)/Energy cost 10)", 2),
-                               ("5. We have been oppressed for too long (broadcast power 3)/Energy cost 15",
-                                3), ("6. Red brings fake news to the media (broadcast power 3)/Energy cost 15)", 3),
-                               ("7. We bring the truth (broadcast power 4/Energy cost 20)",
-                                4), ("8. It's your duty to vote (broadcast power 4/Energy cost 20)", 4),
-                               ("9. Vote for better healthcare (broadcast power 5/Energy cost 30)", 5), ("10. Vote to give the people a voice again (broadcast power 5/Energy cost 30)", 5)]
+        self.messagesString = [("\t1. Every vote matters (broadcast power 1/Energy cost 5)", 1), ("\t2. Don't give up your voice (broadcast power 1/Energy cost 5)", 1),
+                               ("\t3. Voting is an opportunity for change (broadcast power 2/Energy cost 10)",
+                                2), ("\t4. Be the change you want to see (broadcast power 2)/Energy cost 10)", 2),
+                               ("\t5. We have been oppressed for too long (broadcast power 3)/Energy cost 15",
+                                3), ("\t6. Red brings fake news to the media (broadcast power 3)/Energy cost 15)", 3),
+                               ("\t7. We bring the truth (broadcast power 4/Energy cost 20)",
+                                4), ("\t8. It's your duty to vote (broadcast power 4/Energy cost 20)", 4),
+                               ("\t9. Vote for better healthcare (broadcast power 5/Energy cost 30)", 5), ("\t10. Vote to give the people a voice again (broadcast power 5/Energy cost 30)", 5)]
         self.greyAgentsAvailable = nogreyAgents
 
     def setenergy(self, value):
@@ -27,7 +27,7 @@ class BlueNode:
         option = self.messagesString[broadcastOption]
         print(option[0])
         if (option[1] == 1):
-            print("Message Broadcasted")
+            print("\tMessage Broadcasted")
             self.setenergy(5)
             for gn in populationGrid:
                 if isinstance(gn, greenNode):
@@ -47,7 +47,7 @@ class BlueNode:
                     continue
 
         elif (option[1] == 2):
-            print("Message Broadcasted")
+            print("\tMessage Broadcasted")
             self.setenergy(10)
             for gn in populationGrid:
                 if isinstance(gn, greenNode):
@@ -67,7 +67,7 @@ class BlueNode:
                     continue
 
         elif (option[1] == 3):
-            print("Message Broadcasted")
+            print("\tMessage Broadcasted")
             self.setenergy(15)
             for gn in populationGrid:
                 if isinstance(gn, greenNode):
@@ -86,7 +86,7 @@ class BlueNode:
                 else:
                     continue
         elif (option[1] == 4):
-            print("Message Broadcasted")
+            print("\tMessage Broadcasted")
             self.setenergy(20)
             for gn in populationGrid:
                 if isinstance(gn, greenNode):
@@ -105,7 +105,7 @@ class BlueNode:
                 else:
                     continue
         else:
-            print("Message Broadcasted")
+            print("\tMessage Broadcasted")
             self.setenergy(30)
             for gn in populationGrid:
                 if isinstance(gn, greenNode):
@@ -127,7 +127,7 @@ class BlueNode:
     def deployGreyAgent(self, poplist, grid):
         if (self.greyAgentsAvailable > 0):
             self.greyAgentsAvailable -= 1
-            print("Grey agent deployed")
+            print("\tGrey agent deployed")
             rnum = random.randrange(1, 6)
             ally = True
             if (rnum < 2):
