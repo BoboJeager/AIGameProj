@@ -7,7 +7,7 @@ from greenNode import greenNode
 
 class BlueNode:
 
-    def __init__(self,nogreyAgents):
+    def __init__(self, nogreyAgents):
         self.energy = 100
         self.messagesString = [("1. Every vote matters (broadcast power 1/Energy cost 5)", 1), ("2. Don't give up your voice (broadcast power 1/Energy cost 5)", 1),
                                ("3. Voting is an opportunity for change (broadcast power 2/Energy cost 10)",
@@ -26,28 +26,28 @@ class BlueNode:
         broadcastOption -= 1
         option = self.messagesString[broadcastOption]
         print(option[0])
-        if(option[1] == 1):
-            print("broadcasted")
+        if (option[1] == 1):
+            print("Message Broadcasted")
             self.setenergy(5)
             for gn in populationGrid:
                 if isinstance(gn, greenNode):
                     influence = random.randrange(1, 6)
                     if influence < 4:
-                        if(gn.voting):
+                        if (gn.voting):
                             gn.setUncertainty(-0.1)
-                            if(gn.uncertainty < -1):
+                            if (gn.uncertainty < -1):
                                 gn.uncertainty = -1
                         else:
                             gn.setUncertainty(0.1)
-                            if(gn.uncertainty > 1):
+                            if (gn.uncertainty > 1):
                                 gn.flipVote()
                                 x = 1 - gn.uncertainty
                                 gn.uncertainty = 1 - x
                 else:
                     continue
 
-        elif(option[1] == 2):
-            print("broadcasted")
+        elif (option[1] == 2):
+            print("Message Broadcasted")
             self.setenergy(10)
             for gn in populationGrid:
                 if isinstance(gn, greenNode):
@@ -67,7 +67,7 @@ class BlueNode:
                     continue
 
         elif (option[1] == 3):
-            print("broadcasted")
+            print("Message Broadcasted")
             self.setenergy(15)
             for gn in populationGrid:
                 if isinstance(gn, greenNode):
@@ -86,7 +86,7 @@ class BlueNode:
                 else:
                     continue
         elif (option[1] == 4):
-            print("broadcasted")
+            print("Message Broadcasted")
             self.setenergy(20)
             for gn in populationGrid:
                 if isinstance(gn, greenNode):
@@ -105,7 +105,7 @@ class BlueNode:
                 else:
                     continue
         else:
-            print("broadcasted")
+            print("Message Broadcasted")
             self.setenergy(30)
             for gn in populationGrid:
                 if isinstance(gn, greenNode):
@@ -127,7 +127,7 @@ class BlueNode:
     def deployGreyAgent(self, poplist, grid):
         if (self.greyAgentsAvailable > 0):
             self.greyAgentsAvailable -= 1
-            print("agent deployed")
+            print("Grey agent deployed")
             rnum = random.randrange(1, 6)
             ally = True
             if (rnum < 2):
@@ -136,7 +136,7 @@ class BlueNode:
             poplist.append(gAgent)
             grid[gAgent.id] = 0
         else:
-            print("No more agents you used all")
+            print("You have no agents remaining")
 
     def deploySimulatedGreyAgent(self, poplist):
         rnum = random.randrange(1, 6)
@@ -149,25 +149,25 @@ class BlueNode:
     def simulatebroadcastMessage(self, populationGrid, broadcastOption):
         broadcastOption -= 1
         option = self.messagesString[broadcastOption]
-        if(option[1] == 1):
+        if (option[1] == 1):
             for gn in populationGrid:
                 if isinstance(gn, greenNode):
                     influence = random.randrange(1, 6)
                     if influence < 4:
-                        if(gn.voting):
+                        if (gn.voting):
                             gn.setUncertainty(-0.1)
-                            if(gn.uncertainty < -1):
+                            if (gn.uncertainty < -1):
                                 gn.uncertainty = -1
                         else:
                             gn.setUncertainty(0.1)
-                            if(gn.uncertainty > 1):
+                            if (gn.uncertainty > 1):
                                 gn.flipVote()
                                 x = 1 - gn.uncertainty
                                 gn.uncertainty = 1 - x
                 else:
                     continue
 
-        elif(option[1] == 2):
+        elif (option[1] == 2):
             for gn in populationGrid:
                 if isinstance(gn, greenNode):
                     influence = random.randrange(1, 6)

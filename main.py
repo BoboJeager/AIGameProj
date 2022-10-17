@@ -7,23 +7,22 @@ import matplotlib.pyplot as plt
 
 def main():
     x = input("Please enter the size for the game: ")
-    # grey agents based on board size
     redLearningGraph = []
     greyagentsforBlue = math.ceil(float(x)*0.05)
-    startingMaxUncertainty = input("input MAX uncertainty green can have: ")
+    startingMaxUncertainty = input("Input MAX uncertainty green can have: ")
     startingMinUncertainty = input(
-        "input MIN Uncertainty green can have (enter a positive number and it will be converted to negative): ")
+        "Input MIN Uncertainty green can have (enter a positive number and it will be converted to negative): ")
     playerPlayingBlue = False
     playerPlayingRed = False
 
-    players = input("Players playing: ")
-    if(int(players) == 1):
+    players = input("Number of players: ")
+    if (int(players) == 1):
         team = input("Do you want to play as blue? (y/n) ")
-        if(team == 'y'):
+        if (team == 'y'):
             playerPlayingBlue = True
         else:
             playerPlayingRed = True
-    if(int(players) == 2):
+    if (int(players) == 2):
         playerPlayingBlue = True
         playerPlayingRed = True
 
@@ -31,10 +30,6 @@ def main():
     displayGraphAfter = input(
         "Do you want to be asked to display the graph after each game? (y/n) ")
 
-    # Need checks for valid inputs here - for testing play as both players for now
-    # Starting uncertainties seems very high (all close to/if not at 1) - nvm I think this just break when min - uncertainty is -1
-
-    print("WARNING: This is currently an endless while-loop for testing.")
     winners = []
     winpercentage = []
     try:
@@ -122,7 +117,7 @@ def main():
         print("Number of blue wins: ", BlueWin)
         print("Number of red wins: ", RedWin)
         print("Number of tied games: ", NoWin)
-        print("red learning graph is", ginstance.aiplayers.redAILearningGraph)
+        print("Red learning graph is", ginstance.aiplayers.redAILearningGraph)
 
         fig1, ax1 = plt.subplots()
         sizes = [BlueWin, RedWin, NoWin]
@@ -138,5 +133,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/10

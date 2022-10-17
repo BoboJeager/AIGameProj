@@ -22,7 +22,7 @@ class RedNode:
         option = self.messagesString[broadcastOption]
         print(option[0])
         if option[1] == 1:
-            print("broadcasted\n")
+            print("Message Broadcasted")
             for gn in populationGrid:
                 influence = random.randrange(1, 6)
                 if influence < 4:
@@ -39,7 +39,7 @@ class RedNode:
                             gn.uncertainty = 1 - x
 
         elif option[1] == 2:
-            print("broadcasted\n")
+            print("Message Broadcasted")
             for gn in populationGrid:
                 influence = random.randrange(1, 6)
                 if influence < 4:
@@ -55,7 +55,7 @@ class RedNode:
                             x = 1 - gn.uncertainty
                             gn.uncertainty = 1 - x
         elif option[1] == 3:
-            print("broadcasted\n")
+            print("Message Broadcasted")
             for gn in populationGrid:
                 influence = random.randrange(1, 6)
                 if influence < 4:
@@ -71,7 +71,7 @@ class RedNode:
                             x = 1 - gn.uncertainty
                             gn.uncertainty = 1 - x
         elif option[1] == 4:
-            print("broadcasted\n")
+            print("Message Broadcasted")
             for gn in populationGrid:
                 influence = random.randrange(1, 6)
                 if influence < 4:
@@ -87,7 +87,7 @@ class RedNode:
                             x = 1 - gn.uncertainty
                             gn.uncertainty = 1 - x
         else:
-            print("broadcasted\n")
+            print("Message Broadcasted")
             for gn in populationGrid:
                 influence = random.randrange(1, 6)
                 if influence < 4:

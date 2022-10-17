@@ -28,7 +28,6 @@ class Gameplay:
         self.aiplayers = ai(nogreyagents)
 
     def setup(self):
-        # Press Ctrl+F8 to toggle the breakpoint.
         dataDist = np.random.pareto(1, self.size) + 1
         voting = True
         count = 0
@@ -120,14 +119,8 @@ class Gameplay:
         print('Everyone is talking...')
         for key in self.grid.keys():
             iagent = random.randrange(0, len(self.poplist))
-            # print(self.poplist[key].uncertainty,self.poplist[key].id)
             self.grid[key] = self.poplist[iagent]
             self.poplist[key].interact(self.grid[key])
-            # print(self.poplist[key].uncertainty, self.poplist[key].id)
-
-        # for key, value in self.grid.items():
-        #     key.interact(value)
-
         print('Interaction is over...\n')
 
     def blueTeamTurn(self):
@@ -143,7 +136,8 @@ class Gameplay:
                 if (choice == 1):
                     for t in self.bluePlayer.messagesString:
                         print(t[0])
-                    option = input("\nwhich message to broadcast?\n")
+                    option = input(
+                        "\nWhich message do you want to broadcast?\n")
                     option = int(option)
                     self.bluePlayer.broadcastMessage(self.poplist, option)
                     print(self.bluePlayer.energy)
@@ -152,16 +146,17 @@ class Gameplay:
                         self.bluePlayer.deployGreyAgent(
                             self.poplist, self.grid)
                     else:
-                        print("No agents available choose a message to broadcast")
+                        print("There are no grey agents left!")
                         for t in self.bluePlayer.messagesString:
                             print(t[0])
-                        option = input("\nwhich message to broadcast?\n")
+                        option = input(
+                            "\nWhich message do you want to broadcast?\n")
                         option = int(option)
                         self.bluePlayer.broadcastMessage(self.poplist, option)
                         print(self.bluePlayer.energy)
 
             except ValueError:
-                print('number must be an int')
+                print('Error - Number must be an int')
         else:
             self.aiplayers.blueAIagent(
                 self.poplist, self.grid)
@@ -170,7 +165,7 @@ class Gameplay:
         if self.redRealPlayer:
             for t in self.redPlayer.messagesString:
                 print(t[0])
-            option = input("\nwhich message to broadcast?\n")
+            option = input("\nWhich message do you want to broadcast?\n")
             option = int(option)
             self.redPlayer.broadcast(self.poplist, option)
         else:

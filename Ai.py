@@ -34,8 +34,8 @@ class ai:
                     moveScores.append(-10000000000000)
         bestNumber = max(moveScores)
         bestMove = moveScores.index(bestNumber)
-        print("Move scores = ", moveScores)
-        print("The best move is = ", bestMove)
+        # print("Move scores = ", moveScores)
+        # print("The best move is = ", bestMove)
         if (bestMove < 9):
             self.blueAI.broadcastMessage(populationList, bestMove + 1)
             # self.blueAI.setenergy(blueEnergy[bestMove])
@@ -159,8 +159,9 @@ class ai:
             self.initialState = populationList.copy()
             bestNextFiveMoves = self.reccomendedMoveSet(populationList)
         if self.turn < 9:
-            if not bestNextFiveMoves == None and len(bestNextFiveMoves) >0:
-                self.redAI.broadcast(populationList, bestNextFiveMoves[self.turn] + 1)
+            if not bestNextFiveMoves == None and len(bestNextFiveMoves) > 0:
+                self.redAI.broadcast(
+                    populationList, bestNextFiveMoves[self.turn] + 1)
             else:
                 for i in range(10):
                     boardcopy = populationList.copy()
@@ -169,8 +170,8 @@ class ai:
                     moveScores.append(score)
                 bestNumber = max(moveScores)
                 bestMove = moveScores.index(bestNumber)
-                print("Move scores = ", moveScores)
-                print("The best move is = ", bestMove)
+                # print("Move scores = ", moveScores)
+                # print("The best move is = ", bestMove)
                 self.redAI.broadcast(populationList, bestMove + 1)
                 self.redFirstFiveMoves.append(bestMove)
 
@@ -182,8 +183,8 @@ class ai:
                 moveScores.append(score)
             bestNumber = max(moveScores)
             bestMove = moveScores.index(bestNumber)
-            print("Move scores = ", moveScores)
-            print("The best move is = ", bestMove)
+            # print("Move scores = ", moveScores)
+            # print("The best move is = ", bestMove)
             self.redAI.broadcast(populationList, bestMove + 1)
 
     def redminimax(self, populationList, depth, aiturn):
@@ -333,8 +334,9 @@ class ai:
             for i in self.redAILearningGraph:
                 if self.compareState(checkState, i):
                     winningpossibilities.append(i)
-            bestMoveSet = max(winningpossibilities, key=lambda item:item[2])[3]
-            print("best Move set = ", bestMoveSet)
+            bestMoveSet = max(winningpossibilities,
+                              key=lambda item: item[2])[3]
+            # print("best Move set = ", bestMoveSet)
             return bestMoveSet
         else:
             return None
